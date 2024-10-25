@@ -21,7 +21,7 @@
 }
 
 .title-table {
-    color: #795548;
+    color: #fdfbfa;
     margin-left: 70px;
 }
 
@@ -88,4 +88,15 @@
     .delete-user-button {
         margin-right: 35px;
     }
+}
+
+/* Imagen de fondo para la página de Users */
+.main-container {
+    min-height: 100vh;
+    background: url('../assets/images/utencilios.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

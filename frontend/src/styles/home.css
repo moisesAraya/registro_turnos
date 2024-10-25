@@ -1,9 +1,9 @@
-/* Imagen de fondo para la página de Home */
-.home-container {
+.main-container {
     min-height: 100vh;
-    background: url('../assets/images/varios-utensilios-cocina_522560-12495.jpg') no-repeat center center fixed;
+    background: url('../assets/images/utencilios.jpg') no-repeat center center fixed;
     background-size: cover;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
