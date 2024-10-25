@@ -1,5 +1,5 @@
 {
-  "name": "plantillaisw2024",
+  "name": "registro_turnos",
   "version": "1.0.0",
   "description": "Plantilla de proyecto para Ingenieria de Software 2024-2",
   "type": "module",
@@ -15,10 +15,10 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.0.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^4.21.0",
-    "express-session": "^1.18.0",
+    "express-session": "^1.18.1",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "passport": "^0.7.0",

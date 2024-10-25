@@ -39,7 +39,7 @@ export default function Popup({ show, setShow, data, action }) {
                                 label: "Correo electrónico",
                                 name: "email",
                                 defaultValue: userData.email || "",
-                                placeholder: 'example@gmail.cl',
+                                placeholder: 'example@gmail.com',
                                 fieldType: 'input',
                                 type: "email",
                                 required: true,

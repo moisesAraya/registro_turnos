@@ -1,10 +1,15 @@
 "use strict";
 import Joi from "joi";
 
+// Lista de dominios permitidos
+const validDomains = ['@gmail.cl', '@gmail.com', '@outlook.com', '@hotmail.com'];
+
+// Función de validación personalizada
 const domainEmailValidator = (value, helper) => {
-  if (!value.endsWith("@gmail.cl")) {
+  // Verifica si el correo termina con alguno de los dominios válidos
+  if (!validDomains.some(domain => value.endsWith(domain))) {
     return helper.message(
-      "El correo electrónico debe finalizar en @gmail.cl."
+      `El correo electrónico debe finalizar en uno de los siguientes dominios: ${validDomains.join(', ')}.`
     );
   }
   return value;
@@ -20,11 +25,11 @@ export const authValidation = Joi.object({
       "string.empty": "El correo electrónico no puede estar vacío.",
       "any.required": "El correo electrónico es obligatorio.",
       "string.base": "El correo electrónico debe ser de tipo texto.",
-      "string.email": "El correo electrónico debe finalizar en @gmail.cl.",
+      "string.email": "El correo electrónico debe finalizar en un dominio válido.",
       "string.min": "El correo electrónico debe tener al menos 15 caracteres.",
       "string.max": "El correo electrónico debe tener como máximo 35 caracteres.",
     })
-    .custom(domainEmailValidator, "Validación dominio email"),
+    .custom(domainEmailValidator, "Validación dominio email"), // Validación personalizada
   password: Joi.string()
     .min(8)
     .max(26)
@@ -77,11 +82,11 @@ export const registerValidation = Joi.object({
       "string.empty": "El correo electrónico no puede estar vacío.",
       "any.required": "El correo electrónico es obligatorio.",
       "string.base": "El correo electrónico debe ser de tipo texto.",
-      "string.email": "El correo electrónico debe finalizar en @gmail.cl.",
+      "string.email": "El correo electrónico debe finalizar en un dominio válido.",
       "string.min": "El correo electrónico debe tener al menos 15 caracteres.",
       "string.max": "El correo electrónico debe tener como máximo 35 caracteres.",
     })
-    .custom(domainEmailValidator, "Validación dominio email"),
+    .custom(domainEmailValidator, "Validación dominio email"), // Validación personalizada
   password: Joi.string()
     .min(8)
     .max(26)
@@ -89,7 +94,7 @@ export const registerValidation = Joi.object({
     .required()
     .messages({
       "string.empty": "La contraseña no puede estar vacía.",
-      "any.required": "La contraseña es obligatorio.",
+      "any.required": "La contraseña es obligatoria.",
       "string.base": "La contraseña debe ser de tipo texto.",
       "string.min": "La contraseña debe tener al menos 8 caracteres.",
       "string.max": "La contraseña debe tener como máximo 26 caracteres.",

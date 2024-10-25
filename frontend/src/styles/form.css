@@ -36,14 +36,14 @@
 
 
 .form {
-	background-color: #eef7ff; /*Color del formulario*/
+	background-color: #FFEBEE; /*Color del formulario*/
 	padding: 7vh;
 	display: flex;
 	flex-direction: column;
 	border-radius: 24px;
 	align-items: center;
 	h1 {
-		color: #003366; /*Color del titulo del formulario*/
+		color: #795548; /*Color del titulo del formulario*/
 		font-size: 30px;
 		font-weight: bold;
 		margin: 0;
@@ -54,21 +54,21 @@
 		display: flex;
 	}
 	label {
-		color: #003366; /*Color label de inputs del formulario*/
+		color: #795548; /*Color label de inputs del formulario*/
 		font-weight: bold;
 		margin-bottom: 0.7vh;
 	}
 	input {
 		display: flex;
-		border: 3px solid #003366; /*Color del borde de inputs del formulario*/
+		border: 3px solid #795548; /*Color del borde de inputs del formulario*/
 		border-radius: 12px;
 		padding: 8px 5px;
 		background-repeat: no-repeat;
 		margin-bottom: 0.8vh;
-		background-color: #eef7ff;
+		background-color: #FFEBEE;
 		font-weight: regular;
 		font-size: 16px;
-		color: #003366;
+		color: #795548;
 		border-radius: 12px;
 		background-position: right 10px center;
 		background-size: 25px 25px;
@@ -79,20 +79,20 @@
 		font-weight: light;
 	}
 	input:focus {
-		background-color: rgba(0, 110, 223, 0.14);
+		background-color: rgba(255, 102, 0, 0.041);
 		font-weight: regular;
 	}
 	select {
 		display: flex;
-		border: 3px solid #003366; /*Color del borde de selects del formulario*/
+		border: 3px solid #795548; /*Color del borde de selects del formulario*/
 		border-radius: 12px;
 		padding: 8px 5px;
 		background-repeat: no-repeat;
 		margin-bottom: 0.8vh;
-		background-color: #eef7ff;
+		background-color: #FFEBEE;
 		font-weight: regular;
 		font-size: 16px;
-		color: #003366;
+		color: #795548;
 		border-radius: 12px;
 		background-position: right 30px center;
 		background-size: 25px 25px;
@@ -114,15 +114,15 @@
 	}
 	textarea {
 		display: flex;
-		border: 3px solid #003366; /*Color del borde de textareas del formulario*/
+		border: 3px solid #795548; /*Color del borde de textareas del formulario*/
 		border-radius: 12px;
 		padding: 8px 5px;
 		background-repeat: no-repeat;
 		margin-bottom: 0.8vh;
-		background-color: #eef7ff;
+		background-color: #FFEBEE;
 		font-weight: regular;
 		font-size: 16px;
-		color: #003366;
+		color: #795548;
 		border-radius: 12px;
 		background-position: right 10px center;
 		background-size: 25px 25px;
@@ -144,17 +144,17 @@
 		border-radius: 12px;
 		border: none;
 		width: 100%;
-		background-color: #003366; /*Color del boton del formulario*/
-		color: #eef7ff;
+		background-color: #795548; /*Color del boton del formulario*/
+		color: #FFEBEE;
 		font-weight: bold;
 		font-size: 16px;
-		border: 3px solid #003366; /*Color del borde del boton*/
+		border: 3px solid #795548; /*Color del borde del boton*/
 		margin-top: 10px;
 	}
 	button:hover{
-		border: 3px solid #003366;
-		background-color: #eef7ff;
-		color: #003366;
+		border: 3px solid #795548;
+		background-color: #FFEBEE;
+		color: #795548;
 		transition: .3s ease-out;
 	}
 	div {
@@ -181,7 +181,7 @@
 
 .container {
 	height: 100vh;	
-	background: linear-gradient(90deg, #003366, #001a33); /*Color principal para login (gradiente)*/
+	background: linear-gradient(90deg, #795548, #A37666); /*Color principal para login (gradiente)*/
 	display: flex;
 	justify-content: center;
 	align-items: center;
