@@ -6,50 +6,50 @@ import { showErrorAlert, showSuccessAlert } from '@helpers/sweetAlert.js';
 import '@styles/form.css';
 
 const Register = () => {
-	const navigate = useNavigate();
-	const {
+    const navigate = useNavigate();
+    const {
         errorEmail,
         errorRut,
         errorData,
         handleInputChange
     } = useRegister();
 
-const registerSubmit = async (data) => {
-    try {
-        const response = await register(data);
-        if (response.status === 'Success') {
-            showSuccessAlert('¡Registrado!','Usuario registrado exitosamente.');
-            setTimeout(() => {
-                navigate('/auth');
-            }, 3000)
-        } else if (response.status === 'Client error') {
-            errorData(response.details);
+    const registerSubmit = async (data) => {
+        try {
+            const response = await register(data);
+            if (response.status === 'Success') {
+                showSuccessAlert('¡Registrado!', 'Usuario registrado exitosamente.');
+                setTimeout(() => {
+                    navigate('/auth');
+                }, 3000);
+            } else if (response.status === 'Client error') {
+                errorData(response.details);
+            }
+        } catch (error) {
+            console.error("Error al registrar un usuario: ", error);
+            showErrorAlert('Cancelado', 'Ocurrió un error al registrarse.');
         }
-    } catch (error) {
-        console.error("Error al registrar un usuario: ", error);
-        showErrorAlert('Cancelado', 'Ocurrió un error al registrarse.');
-    }
-}
+    };
 
-const patternRut = new RegExp(/^(?:(?:[1-9]\d{0}|[1-2]\d{1})(\.\d{3}){2}|[1-9]\d{6}|[1-2]\d{7}|29\.999\.999|29999999)-[\dkK]$/)
+    const patternRut = new RegExp(/^(?:(?:[1-9]\d{0}|[1-2]\d{1})(\.\d{3}){2}|[1-9]\d{6}|[1-2]\d{7}|29\.999\.999|29999999)-[\dkK]$/);
 
-	return (
-		<main className="container">
-			<Form
-				title="Crea tu cuenta"
-				fields={[
-					{
-						label: "Nombre completo",
-						name: "nombreCompleto",
-						placeholder: "Ingrese su nombre completo",
+    return (
+        <main className="container">
+            <Form
+                title="Crea tu cuenta"
+                fields={[
+                    {
+                        label: "Nombre completo",
+                        name: "nombreCompleto",
+                        placeholder: "Ingrese su nombre completo",
                         fieldType: 'input',
-						type: "text",
-						required: true,
-						minLength: 15,
-						maxLength: 50,
+                        type: "text",
+                        required: true,
+                        minLength: 15,
+                        maxLength: 50,
                         pattern: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
-						patternMessage: "Debe contener solo letras y espacios",
-					},
+                        patternMessage: "Debe contener solo letras y espacios",
+                    },
                     {
                         label: "Correo electrónico",
                         name: "email",
@@ -66,20 +66,19 @@ const patternRut = new RegExp(/^(?:(?:[1-9]\d{0}|[1-2]\d{1})(\.\d{3}){2}|[1-9]\d
                                 return validDomains.some(domain => value.endsWith(domain)) || `El correo debe terminar en uno de los siguientes dominios: ${validDomains.join(', ')}`;
                             }
                         },
-onChange: (e) => handleInputChange('email', e.target.value),
-
+                        onChange: (e) => handleInputChange('email', e.target.value),
                     },
                     {
-						label: "Rut",
+                        label: "Rut",
                         name: "rut",
                         placeholder: "23.770.330-1",
                         fieldType: 'input',
                         type: "text",
-						minLength: 9,
-						maxLength: 12,
-						pattern: patternRut,
-						patternMessage: "Debe ser xx.xxx.xxx-x o xxxxxxxx-x",
-						required: true,
+                        minLength: 9,
+                        maxLength: 12,
+                        pattern: patternRut,
+                        patternMessage: "Debe ser xx.xxx.xxx-x o xxxxxxxx-x",
+                        required: true,
                         errorMessageData: errorRut,
                         onChange: (e) => handleInputChange('rut', e.target.value)
                     },
@@ -95,17 +94,17 @@ onChange: (e) => handleInputChange('email', e.target.value),
                         pattern: /^[a-zA-Z0-9]+$/,
                         patternMessage: "Debe contener solo letras y números",
                     },
-				]}
-				buttonText="Registrarse"
-				onSubmit={registerSubmit}
-				footerContent={
-					<p>
-						¿Ya tienes cuenta?, <a href="/auth">¡Inicia sesión aquí!</a>
-					</p>
-				}
-			/>
-		</main>
-	);
+                ]}
+                buttonText="Registrarse"
+                onSubmit={registerSubmit}
+                footerContent={
+                    <p>
+                        ¿Ya tienes cuenta?, <a href="/auth">¡Inicia sesión aquí!</a>
+                    </p>
+                }
+            />
+        </main>
+    );
 };
 
 export default Register;

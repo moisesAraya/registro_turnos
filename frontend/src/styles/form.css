@@ -181,7 +181,7 @@
 
 .container {
 	height: 100vh;	
-	background: linear-gradient(90deg, #795548, #A37666); /*Color principal para login (gradiente)*/
+	background: url('../assets/images/napkin-spoons-near-bun-garlic.jpg') no-repeat center center/cover;
 	display: flex;
 	justify-content: center;
 	align-items: center;

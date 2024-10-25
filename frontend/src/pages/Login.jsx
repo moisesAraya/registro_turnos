@@ -45,10 +45,9 @@ const Login = () => {
                             emailDomain: (value) => {
                                 const validDomains = ['@gmail.cl', '@gmail.com', '@outlook.com', '@hotmail.com']; // Lista de dominios permitidos
                                 return validDomains.some(domain => value.endsWith(domain)) || `El correo debe terminar en uno de los siguientes dominios: ${validDomains.join(', ')}`;
-    }
-},
-onChange: (e) => handleInputChange('email', e.target.value),
-
+                            }
+                        },
+                        onChange: (e) => handleInputChange('email', e.target.value),
                     },
                     {
                         label: "Contraseña",
