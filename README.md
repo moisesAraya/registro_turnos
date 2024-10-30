@@ -1,297 +1,91 @@
-# Plantilla-ISW-Proyecto-2024
+Sistema de Registro de Turnos
+Este repositorio contiene un sistema de registro de turnos diseñado para gestionar la entrada y salida de trabajadores. La aplicación permite la autenticación y autorización de usuarios mediante JWT, diferenciando roles de administrador y trabajador, y permite a los administradores generar códigos QR diarios para el registro de asistencia.
 
-Una plantilla base para proyectos de Ingeniería de Software (ISW) desarrollados durante el año 2024-2. Esta plantilla está diseñada para ayudar a los estudiantes a estructurar y organizar sus proyectos de software, incluyendo tanto la parte de Backend como de Frontend.
-
-## Tabla de contenidos
-* [Descripción General](#descripción-general)
-* [Backend](#backend)
-* [Frontend](#frontend)
-* [Arquitectura del Proyecto](#arquitectura-del-proyecto)
-  * [Estructura del Backend](#estructura-del-backend)
-  * [Estructura del Frontend](#estructura-del-frontend)
-* [Instalación y Configuración](#instalación-y-configuración)
-  * [Prerrequisitos](#prerrequisitos)
-  * [Clonación del Repositorio](#clonación-del-repositorio)
-  * [Configuración del Backend](#configuración-del-backend)
-  * [Configuración del Frontend](#configuración-del-frontend)
-  * [Configuración de DBeaver y PostgreSQL](#configuración-de-dbeaver-y-postgresql)
-* [Tecnologías](#tecnologías)
-  * [PostgreSQL](#postgresql)
-  * [Express.js](#expressjs)
-  * [React](#react)
-  * [Node.js](#nodejs)
-  * [Otros Recursos y Librerías](#otros-recursos-y-librerías)
-
-## Descripción General
-
-La `Plantilla-ISW-Proyecto-2024` es una base preconfigurada para proyectos de Ingeniería de Software que incluye tanto la parte del Backend como la del Frontend. Está diseñada para que los estudiantes puedan enfocarse en desarrollar sus funcionalidades específicas sin tener que preocuparse por la configuración inicial del proyecto. 
-
-### Backend
-
-El Backend de esta plantilla implementa las siguientes funcionalidades principales:
-
-- **Autenticación y Autorización**: Uso de `passport.js` para la autenticación segura de los usuarios.
-- **CRUD de Usuarios**: Permite la lectura, actualización y eliminación de usuarios.
-- **Registro de Usuarios**: Implementación de un sistema de registro que permite a nuevos usuarios registrarse en la aplicación.
-
-### Frontend
-
-El Frontend proporciona una interfaz de usuario simple y funcional para interactuar con el sistema. Incluye las siguientes páginas y funcionalidades:
-
-- **Página de Inicio de Sesión**: Permite a los usuarios autenticarse en el sistema.
-- **Página de Registro de Usuarios**: Los nuevos usuarios pueden registrarse mediante un formulario.
-- **Página de Error**: Muestra un mensaje de error cuando algo sale mal.
-- **Página Principal**: Página de inicio tras la autenticación exitosa.
-- **Página de Gestión de Usuarios**: 
-  - Muestra una tabla con todos los usuarios registrados.
-  - Permite modificar y eliminar usuarios directamente desde la tabla.
-  - Incluye una funcionalidad de búsqueda para encontrar usuarios específicos.
-- **Cerrar Sesión**: Opción para que los usuarios cierren su sesión de manera segura.
-
-Esta plantilla proporciona una estructura robusta para que los estudiantes puedan extender y personalizar según las necesidades de sus proyectos.
-
-## Arquitectura del Proyecto
-
-Este proyecto está dividido en dos partes principales: el Backend y el Frontend. A continuación, se muestra la estructura del Backend:
-
-### Estructura del Backend
-
-```bash
+Tecnologías utilizadas
+Frontend: React, Vite, Axios para solicitudes HTTP
+Backend: Node.js, Express.js, Passport.js para autenticación
+Base de datos: PostgreSQL, manejada con TypeORM como ORM
+Autenticación: JWT para la gestión de sesiones y autenticación de usuarios
+Almacenamiento de archivos: Multer para gestionar las imágenes de perfil
+Estructura del Proyecto
+plaintext
+Copiar código
 ├── backend
-│   ├── node_modules
 │   ├── src
-│   │   ├── auth
-│   │   │   └── passport.auth.js
 │   │   ├── config
-│   │   │   ├── .env.example
-│   │   │   ├── configDb.js
-│   │   │   ├── configEnv.js
-│   │   │   └── initialSetup.js
 │   │   ├── controllers
-│   │   │   ├── auth.controller.js
-│   │   │   └── user.controller.js
 │   │   ├── entity
-│   │   │   └── user.entity.js
-│   │   ├── handlers
-│   │   │   └── responseHandlers.js
-│   │   ├── helpers
-│   │   │   └── bcrypt.helper.js
 │   │   ├── middlewares
-│   │   │   ├── authentication.middleware.js
-│   │   │   └── authorization.middleware.js
 │   │   ├── routes
-│   │   │   ├── auth.routes.js
-│   │   │   ├── index.routes.js
-│   │   │   └── user.routes.js
-│   │   ├── services
-│   │   │   ├── auth.service.js
-│   │   │   └── user.service.js
-│   │   ├── validations
-│   │   │   ├── auth.validation.js
-│   │   │   └── user.validation.js
-│   │   └── index.js
-│   ├── .gitignore
-│   ├── .prettierrc.json
-│   ├── .eslintrc.config.js
-│   ├── package-lock.json
-│   └── package.json
-```
-
-### Estructura del Frontend
-
-```bash
+│   │   └── app.js
 ├── frontend
-│   ├── node_modules
 │   ├── public
 │   ├── src
-│   │   ├── assets
-│   │   │   ├── deleteIcon.svg
-│   │   │   ├── react.svg
-│   │   │   └── updateIcon.svg
 │   │   ├── components
-│   │   │   ├── Filter.jsx
-│   │   │   ├── Form.jsx
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── Table.jsx
-│   │   │   └── userOptions.jsx
-│   │   ├── context
-│   │   │   └── AuthContext.jsx
-│   │   ├── helpers
-│   │   │   ├── formatData.js
-│   │   │   ├── lowerCaseData.js
-│   │   │   └── sweetAlert.js
 │   │   ├── hooks
-│   │   │   ├── auth
-│   │   │   │   ├── useLogin.jsx
-│   │   │   │   └── useRegister.jsx
-│   │   │   ├── table
-│   │   │   │   └── useTable.jsx
-│   │   │   └── users
-│   │   │       ├── useDeleteUser.jsx
-│   │   │       ├── useEditUser.jsx
-│   │   │       └── useGetUsers.jsx
 │   │   ├── pages
-│   │   │   ├── EditUser.jsx
-│   │   │   ├── Error404.jsx
-│   │   │   ├── Home.jsx
-│   │   │   ├── Login.jsx
-│   │   │   ├── Register.jsx
-│   │   │   └── Users.jsx
 │   │   ├── services
-│   │   │   ├── auth.service.js
-│   │   │   ├── root.service.js
-│   │   │   └── user.service.js
-│   │   ├── styles
-│   │   │   ├── animations.css
-│   │   │   └── styles.css
-│   ├── index.css
-│   ├── main.jsx
-│   ├── .env.example
-│   ├── .gitignore
-│   ├── .eslint.config.js
-│   ├── index.html
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── README.md
-└── └── vite.config.js
-```
+│   │   └── main.jsx
+└── README.md
+Funcionalidades
+1. Autenticación y Autorización
+Registro y login: Los usuarios pueden registrarse e iniciar sesión, y se les asigna un rol específico (administrador o trabajador).
+Roles: Los administradores tienen acceso a funciones adicionales, como la generación de códigos QR y la gestión de usuarios.
+JWT: Los tokens de autenticación se gestionan con JWT, y se utilizan para proteger las rutas del servidor.
+2. Gestión de Usuarios (Solo Administradores)
+Listado de usuarios: Los administradores pueden ver y gestionar todos los usuarios.
+Edición y eliminación de usuarios: Opciones de edición y eliminación en la vista de administración.
+3. Generación de Códigos QR (Solo Administradores)
+Generación diaria de QR: El sistema permite a los administradores generar un código QR único cada día, el cual los trabajadores pueden escanear para registrar su asistencia.
+Visualización automática: Una vez generado, el código QR se muestra en la interfaz de inicio del administrador.
+4. Perfil de Usuario
+Subida de imagen de perfil: Los usuarios pueden cargar una imagen de perfil utilizando Multer, y esta se almacena en el servidor.
+Visualización de perfil: La imagen y el nombre del usuario aparecen en la barra de navegación tras el inicio de sesión.
+Instalación y Configuración
+Requisitos
+Node.js y npm instalados
+PostgreSQL como base de datos
+Configuración del Backend
+Clona este repositorio.
 
-## Instalación y Configuración
+En la carpeta backend, instala las dependencias:
 
-### Prerrequisitos
-
-Antes de comenzar, asegúrate de tener instalados los siguientes programas:
-
-- [Node.js](https://nodejs.org/) (versión 20.X.X LTS) como entorno de ejecución de JavaScript.
-- [Git](https://git-scm.com/) (versión 2.45.2 o superior) para clonar el repositorio.
-- [PostgreSQL](https://www.postgresql.org/) (versión 16.X.X) para la base de datos.
-- [DBeaver](https://dbeaver.io/) (versión 24.X.X) para la administración de la base de datos (opcional, pero recomendado).
-
-### Clonación del Repositorio
-
-Primero, clona el repositorio en tu máquina local usando el siguiente comando:
-
-```bash
-git clone https://github.com/tu-usuario/Plantilla-ISW-Proyecto-2024.git
-```
-
-### Configuración del Backend
-
-1. Accede al directorio del Backend:
-
-```bash
-cd backend
-```
-
-2. Instala las dependencias del proyecto:
-
-```bash
+bash
+Copiar código
 npm install
-```
+Crea un archivo .env en backend/config con las siguientes variables de entorno:
 
-3. Renombra el archivo `.env.example` a `.env` y configura las variables de entorno necesarias.
+plaintext
+Copiar código
+PORT=3000
+HOST=localhost
+DATABASE=nombre_base_datos
+DB_USERNAME=usuario
+PASSWORD=contraseña
+JWT_SECRET=tu_secreto_jwt
+Inicia el servidor backend:
 
-```bash
-HOST= localhost (Proyecto en local) o IP servidor (Proyecto en producción)
-PORT= (3000-5000) (Proyecto en local) o Puerto 80 (Proyecto en producción)
-DB_USERNAME= Nombre de usuario en la instancia de PostgreSQL
-PASSWORD= Contraseña de usuario en la instancia de PostgreSQL
-DATABASE= Nombre de la base de datos
-ACCESS_TOKEN_SECRET= Secreto del JWT
-cookieKey= Llave de la cookie
-```
-
-4. Configura PostgreSQL:
-
-- Crea una base de datos en PostgreSQL con el nombre especificado en el archivo `.env`.
-
-5. Inicia el servidor:
-
-```bash
+bash
+Copiar código
 npm run dev
-```
+Configuración del Frontend
+Entra a la carpeta frontend y instala las dependencias:
 
-### Configuración del Frontend
-
-1. Accede al directorio del Frontend:
-
-```bash
-cd frontend
-```
-
-2. Instala las dependencias del proyecto:
-
-```bash
+bash
+Copiar código
 npm install
-```
+Inicia el servidor frontend:
 
-3. Renombra el archivo `.env.example` a `.env` y configura las variables de entorno necesarias.
-
-```bash
-VITE_BASE_URL=http://<IP:(Puerto 80 -> 4 digitos)>/api
-```
-
-4. Inicia la aplicación Frontend:
-
-```bash
+bash
+Copiar código
 npm run dev
-```
+Accede a la aplicación en http://localhost:5173.
 
-### Configuración de DBeaver y PostgreSQL
+Uso
+Los administradores pueden iniciar sesión y acceder a la interfaz de administración para gestionar usuarios y generar códigos QR.
+Los trabajadores pueden ver su perfil y escanear el código QR para registrar su ingreso.
+Contribuciones
+Para contribuir, crea un fork del repositorio, realiza tus cambios en una nueva rama, y abre un pull request con una descripción detallada de los cambios.
 
-1. Instalación de PostgreSQL:
-
-- Descarga e instala PostgreSQL desde el siguiente enlace: [PostgreSQL](https://www.postgresql.org/download/).
-- Durante la instalación, configura la contraseña para la base de datos.
-
-2. Configuración de DBeaver:
-
-- Descarga e instala DBeaver desde el siguiente enlace: [DBeaver](https://dbeaver.io/download/).
-- Abre DBeaver y crea una nueva conexión a la base de datos PostgreSQL.
-- Ingresa el nombre de usuario y la contraseña configurados durante la instalación de PostgreSQL.
-
-3. Uso de DBeaver:
-
-- Utiliza DBeaver para administrar y visualizar la base de datos PostgreSQL.
-- Puedes crear tablas, insertar datos, ejecutar consultas SQL y más.
-
-## Tecnologías
-
-Este proyecto utiliza el stack **PERN**, que incluye las siguientes tecnologías:
-
-### PostgreSQL
-
-- **Descripción**: Sistema de gestión de bases de datos relacional y objeto.
-- **Uso en el Proyecto**: Se utiliza para almacenar y gestionar datos de usuarios y otros datos de la aplicación.
-- **Enlace**: [PostgreSQL](https://www.postgresql.org/)
-
-### Express.js
-
-- **Descripción**: Framework minimalista para Node.js que facilita la creación de aplicaciones web y APIs.
-- **Uso en el Proyecto**: Se utiliza para construir la API del Backend, gestionando rutas y solicitudes HTTP.
-- **Enlace**: [Express.js](https://expressjs.com/)
-
-### React
-
-- **Descripción**: Biblioteca de JavaScript para construir interfaces de usuario.
-- **Uso en el Proyecto**: Se utiliza para construir la interfaz de usuario del Frontend, proporcionando una experiencia interactiva y dinámica.
-- **Enlace**: [React](https://reactjs.org/)
-
-### Node.js
-
-- **Descripción**: Entorno de ejecución para JavaScript en el lado del servidor.
-- **Uso en el Proyecto**: Se utiliza para ejecutar el código del Backend y manejar la lógica del servidor.
-- **Enlace**: [Node.js](https://nodejs.org/)
-
-### Otros Recursos y Librerías
-
-- **Passport.js**: Middleware de autenticación para Node.js.
-  - **Enlace**: [Passport.js](http://www.passportjs.org/)
-- **bcrypt.js**: Biblioteca para el hashing de contraseñas.
-  - **Enlace**: [bcrypt.js](https://www.npmjs.com/package/bcryptjs)
-- **dotenv**: Carga variables de entorno desde un archivo `.env`.
-  - **Enlace**: [dotenv](https://www.npmjs.com/package/dotenv)
-
-Estas tecnologías y herramientas forman la base de la aplicación y permiten su funcionamiento de forma correcta.
-
-⌨️ with ❤️ by [@Didudocl](https://github.com/Didudocl)
+Licencia
+Este proyecto está bajo la Licencia MIT.
