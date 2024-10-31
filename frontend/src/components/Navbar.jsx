@@ -20,26 +20,7 @@ const Navbar = () => {
     };
 
     const toggleMenu = () => {
-        if (!menuOpen) {
-            removeActiveClass();
-        } else {
-            addActiveClass();
-        }
         setMenuOpen(!menuOpen);
-    };
-
-    const removeActiveClass = () => {
-        const activeLinks = document.querySelectorAll('.nav-menu ul li a.active');
-        activeLinks.forEach(link => link.classList.remove('active'));
-    };
-
-    const addActiveClass = () => {
-        const links = document.querySelectorAll('.nav-menu ul li a');
-        links.forEach(link => {
-            if (link.getAttribute('href') === location.pathname) {
-                link.classList.add('active');
-            }
-        });
     };
 
     return (
@@ -49,28 +30,33 @@ const Navbar = () => {
                     <li>
                         <NavLink 
                             to="/home" 
-                            onClick={() => { 
-                                setMenuOpen(false); 
-                                addActiveClass();
-                            }} 
-                            activeClassName="active"
+                            onClick={() => setMenuOpen(false)} 
+                            className={({ isActive }) => (isActive ? 'active' : '')}
                         >
                             Inicio
                         </NavLink>
                     </li>
                     {userRole === 'administrador' && (
-                    <li>
-                        <NavLink 
-                            to="/users" 
-                            onClick={() => { 
-                                setMenuOpen(false); 
-                                addActiveClass();
-                            }} 
-                            activeClassName="active"
-                        >
-                            Usuarios
-                        </NavLink>
-                    </li>
+                        <>
+                            <li>
+                                <NavLink 
+                                    to="/qr" 
+                                    onClick={() => setMenuOpen(false)} 
+                                    className={({ isActive }) => (isActive ? 'active' : '')}
+                                >
+                                    Generar Código QR
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink 
+                                    to="/users" 
+                                    onClick={() => setMenuOpen(false)} 
+                                    className={({ isActive }) => (isActive ? 'active' : '')}
+                                >
+                                    Usuarios
+                                </NavLink>
+                            </li>
+                        </>
                     )}
                     <li>
                         <NavLink 
@@ -79,7 +65,7 @@ const Navbar = () => {
                                 logoutSubmit(); 
                                 setMenuOpen(false); 
                             }} 
-                            activeClassName="active"
+                            className={({ isActive }) => (isActive ? 'active' : '')}
                         >
                             Cerrar sesión
                         </NavLink>

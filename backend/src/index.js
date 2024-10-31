@@ -10,6 +10,7 @@ import { cookieKey, HOST, PORT } from "./config/configEnv.js";
 import { connectDB } from "./config/configDb.js";
 import { createUsers } from "./config/initialSetup.js";
 import { passportJwtSetup } from "./auth/passport.auth.js";
+import qrCodeRoutes from "./routes/qrcode.routes.js";
 
 async function setupServer() {
   try {
@@ -39,6 +40,8 @@ async function setupServer() {
 
     app.use(cookieParser());
 
+    app.use("/api/qrcode", qrCodeRoutes);
+    
     app.use(morgan("dev"));
 
     app.use(
