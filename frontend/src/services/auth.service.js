@@ -11,17 +11,20 @@ export async function login(dataUser) {
         });
         const { status, data } = response;
         if (status === 200) {
-            const { nombreCompleto, email, rut, rol } = jwtDecode(data.data.token);
+            const token = data.data.token; // Obtener el token correctamente
+            const { nombreCompleto, email, rut, rol } = jwtDecode(token);
             const userData = { nombreCompleto, email, rut, rol };
             sessionStorage.setItem('usuario', JSON.stringify(userData));
-            axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-            cookies.set('jwt-auth', data.data.token, {path:'/'});
-            return response.data
+            localStorage.setItem('token', token); // Guardar el token en localStorage
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            cookies.set('jwt-auth', token, { path: '/' });
+            return response.data;
         }
     } catch (error) {
         return error.response.data;
     }
 }
+
 
 export async function register(data) {
     try {

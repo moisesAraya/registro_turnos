@@ -40,8 +40,6 @@ async function setupServer() {
 
     app.use(cookieParser());
 
-    app.use("/api/qrcode", qrCodeRoutes);
-    
     app.use(morgan("dev"));
 
     app.use(
@@ -63,6 +61,8 @@ async function setupServer() {
     passportJwtSetup();
 
     app.use("/api", indexRoutes);
+    app.use("/api/qrcode", qrCodeRoutes);
+
 
     app.listen(PORT, () => {
       console.log(`=> Servidor corriendo en ${HOST}:${PORT}/api`);
