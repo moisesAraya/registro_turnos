@@ -18,6 +18,7 @@ async function setupServer() {
 
     app.disable("x-powered-by");
 
+    
     app.use(
       cors({
         credentials: true,
@@ -87,3 +88,5 @@ setupAPI()
   .catch((error) =>
     console.log("Error en index.js -> setupAPI(), el error es: ", error),
   );
+
+  

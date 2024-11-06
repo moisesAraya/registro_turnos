@@ -1,28 +1,26 @@
-// QRCodeComponent.jsx
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { QRCodeCanvas } from "qrcode.react";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios'; // Asegúrate de importar axios
 
 const QRCodeComponent = () => {
-  const [codeData, setCodeData] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [codeData, setCodeData] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  // El token ya está configurado en axios.defaults.headers.common si lo hiciste en login
-
+  // Función para obtener el código QR existente
   const fetchQRCode = async () => {
     try {
-      const response = await axios.get('/qrcode');
-      setCodeData(response.data.codeData || response.data.code);
+      const response = await axios.get('http://localhost:3000/api/qrcode');
+      setCodeData(response.data.codeData);
     } catch (err) {
       console.error("Error en fetchQRCode:", err);
       setErrorMessage("No hay código QR disponible");
     }
   };
-  
+
+  // Función para generar un nuevo código QR
   const generateQRCode = async () => {
     try {
-      const response = await axios.post('/qrcode/generate');
-      setCodeData(response.data.codeData || response.data.code);
+      const response = await axios.post('http://localhost:3000/api/qrcode/generate');
+      setCodeData(response.data.codeData);
     } catch (err) {
       console.error("Error al generar el código QR:", err);
       setErrorMessage("No se pudo generar el código QR");
@@ -35,15 +33,14 @@ const QRCodeComponent = () => {
 
   return (
     <div>
-      <button onClick={generateQRCode}>Generar Código QR</button>
+      <h1>Código QR</h1>
+      {errorMessage && <p>{errorMessage}</p>}
       {codeData ? (
-        <div>
-          <QRCodeCanvas value={codeData} />
-          <p>Escanea este código para registrar tu entrada.</p>
-        </div>
+        <img src={codeData} alt="Código QR" />
       ) : (
-        <p>{errorMessage}</p>
+        <p>No hay código QR disponible</p>
       )}
+      <button onClick={generateQRCode}>Generar Código QR</button>
     </div>
   );
 };
