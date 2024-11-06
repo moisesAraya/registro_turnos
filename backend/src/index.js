@@ -11,6 +11,7 @@ import { connectDB } from "./config/configDb.js";
 import { createUsers } from "./config/initialSetup.js";
 import { passportJwtSetup } from "./auth/passport.auth.js";
 import qrCodeRoutes from "./routes/qrcode.routes.js";
+import workAreasRouter from "./routes/workAreas.js";
 
 async function setupServer() {
   try {
@@ -18,7 +19,6 @@ async function setupServer() {
 
     app.disable("x-powered-by");
 
-    
     app.use(
       cors({
         credentials: true,
@@ -63,7 +63,7 @@ async function setupServer() {
 
     app.use("/api", indexRoutes);
     app.use("/api/qrcode", qrCodeRoutes);
-
+    app.use("/api/work_areas", workAreasRouter); // Agrega la ruta de áreas de trabajo
 
     app.listen(PORT, () => {
       console.log(`=> Servidor corriendo en ${HOST}:${PORT}/api`);
@@ -88,5 +88,3 @@ setupAPI()
   .catch((error) =>
     console.log("Error en index.js -> setupAPI(), el error es: ", error),
   );
-
-  
