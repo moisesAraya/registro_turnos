@@ -23,6 +23,7 @@
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.12.0",
+    "qrcode": "^1.5.4",
     "qrcode.react": "^4.1.0",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.20"

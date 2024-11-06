@@ -1,23 +1,22 @@
-// entity/QRCode.js
+// src/entity/QRCode.js
+
 import { EntitySchema } from 'typeorm';
 
-export default new EntitySchema({
+export const QRCode = new EntitySchema({
   name: 'QRCode',
   tableName: 'qrcodes',
   columns: {
     id: {
       primary: true,
-      type: 'int',
-      generated: true,
+      type: 'uuid',
+      generated: 'uuid',
     },
     codeData: {
       type: 'text',
     },
-    codeContent: {
+    data: {
       type: 'text',
-    },
-    expiresAt: {
-      type: 'timestamp',
+      nullable: true, // Permitir valores nulos si es necesario
     },
     createdAt: {
       type: 'timestamp',

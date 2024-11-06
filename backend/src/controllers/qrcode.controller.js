@@ -1,6 +1,6 @@
 // src/controllers/QRCodeController.js
 import { AppDataSource } from "../config/configDb.js";
-import QRCode from "../entity/QRCode.js";
+import { QRCode } from "../entity/QRCode.js";
 import QRCodeLib from "qrcode";
 
 // Controlador para obtener el código QR
