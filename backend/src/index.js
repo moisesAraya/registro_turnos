@@ -11,7 +11,7 @@ import { connectDB } from "./config/configDb.js";
 import { createUsers } from "./config/initialSetup.js";
 import { passportJwtSetup } from "./auth/passport.auth.js";
 import qrCodeRoutes from "./routes/qrcode.routes.js";
-import workAreasRouter from "./routes/workAreas.js"; // Importa las rutas de áreas de trabajo
+import workAreasRouter from "./routes/workAreas.js";
 
 async function setupServer() {
   try {
