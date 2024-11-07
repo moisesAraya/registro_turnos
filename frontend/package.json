@@ -12,11 +12,13 @@
   "dependencies": {
     "@formkit/tempo": "^0.1.2",
     "axios": "^1.7.5",
+    "chart.js": "^4.4.6",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
     "qrcode.react": "^4.1.0",
     "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
     "react-modal": "^3.16.1",

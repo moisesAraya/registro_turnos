@@ -7,16 +7,16 @@ import QRCodeLib from "qrcode";
 export const obtenerQRCode = async (req, res) => {
   try {
     const qrCodeRepository = AppDataSource.getRepository(QRCode);
-    const qrCode = await qrCodeRepository.findOne({ order: { createdAt: 'DESC' } });
+    const qrCode = await qrCodeRepository.findOne({ order: { createdAt: "DESC" } });
 
     if (!qrCode) {
-      return res.status(404).json({ message: 'No hay código QR disponible' });
+      return res.status(404).json({ message: "No hay código QR disponible" });
     }
 
     return res.json({ codeData: qrCode.codeData });
   } catch (error) {
-    console.error('Error al obtener el código QR:', error);
-    return res.status(500).json({ message: 'Error al obtener el código QR', error: error.message });
+    console.error("Error al obtener el código QR:", error);
+    return res.status(500).json({ message: "Error al obtener el código QR", error: error.message });
   }
 };
 
