@@ -16,8 +16,9 @@ export const Escanea = new EntitySchema({
         type: "uuid",
         },
         scannedAt: {
-        type: "timestamp",
-        createDate: true,
+        type: "timestamp with time zone",
+        default: () => "CURRENT_TIMESTAMP",
+        nullable: false,
         },
     },
     });

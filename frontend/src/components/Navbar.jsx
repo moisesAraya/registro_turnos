@@ -36,6 +36,15 @@ const Navbar = () => {
                             Inicio
                         </NavLink>
                     </li>
+                    <li>
+                        <NavLink 
+                            to="/graph" 
+                            onClick={() => setMenuOpen(false)} 
+                            className={({ isActive }) => (isActive ? 'active' : '')}
+                        >
+                            Gráfico
+                        </NavLink>
+                    </li>
                     {userRole === 'administrador' && (
                         <>
                             <li>
@@ -56,6 +65,7 @@ const Navbar = () => {
                                     Usuarios
                                 </NavLink>
                             </li>
+                            
                         </>
                     )}
                     <li>
