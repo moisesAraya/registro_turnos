@@ -1,31 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios'; // Asegúrate de importar axios
+import axios from 'axios'; 
 
 const QRCodeComponent = () => {
   const [codeData, setCodeData] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Función para obtener el código QR existente
   const fetchQRCode = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/qrcode');
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/qrcode`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       setCodeData(response.data.codeData);
     } catch (err) {
       console.error("Error en fetchQRCode:", err);
       setErrorMessage("No hay código QR disponible");
     }
   };
-
-  // Función para generar un nuevo código QR
+  
   const generateQRCode = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/api/qrcode/generate');
+      const token = localStorage.getItem("token");
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/qrcode/generate`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       setCodeData(response.data.codeData);
     } catch (err) {
       console.error("Error al generar el código QR:", err);
       setErrorMessage("No se pudo generar el código QR");
     }
   };
+  
 
   useEffect(() => {
     fetchQRCode();

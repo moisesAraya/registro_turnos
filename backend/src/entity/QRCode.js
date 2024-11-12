@@ -16,7 +16,7 @@ export const QRCode = new EntitySchema({
     },
     data: {
       type: 'text',
-      nullable: true, // Permitir valores nulos si es necesario
+      nullable: true, 
     },
     createdAt: {
       type: 'timestamp',

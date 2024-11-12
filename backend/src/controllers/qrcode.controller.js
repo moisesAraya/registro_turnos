@@ -1,13 +1,14 @@
-// src/controllers/QRCodeController.js
 import { AppDataSource } from "../config/configDb.js";
 import { QRCode } from "../entity/QRCode.js";
 import QRCodeLib from "qrcode";
 
-// Controlador para obtener el código QR
 export const obtenerQRCode = async (req, res) => {
   try {
     const qrCodeRepository = AppDataSource.getRepository(QRCode);
-    const qrCode = await qrCodeRepository.findOne({ order: { createdAt: 'DESC' } });
+    const [qrCode] = await qrCodeRepository.find({
+      order: { createdAt: 'DESC' },
+      take: 1,
+    });
 
     if (!qrCode) {
       return res.status(404).json({ message: 'No hay código QR disponible' });
@@ -21,21 +22,19 @@ export const obtenerQRCode = async (req, res) => {
 };
 
 
-// Controlador para generar un nuevo código QR
+
 export const generarQRCode = async (req, res) => {
   try {
-    // Genera un código aleatorio
-    const codeContent = Math.random().toString(36).substring(2, 15); // Código aleatorio
+    const codeContent = Math.random().toString(36).substring(2, 15); 
 
-    // Genera el código QR a partir del contenido aleatorio
     const codeData = await QRCodeLib.toDataURL(codeContent);
 
     const qrCodeRepository = AppDataSource.getRepository(QRCode);
     const newQRCode = qrCodeRepository.create({
       codeData,
-      codeContent, // Almacena el contenido para futuras referencias
+      codeContent, 
       createdAt: new Date(),
-      expiresAt: new Date(new Date().getTime() + 24 * 60 * 60 * 1000), // Expira en 24 horas
+      expiresAt: new Date(new Date().getTime() + 15 * 60 * 1000), 
     });
     await qrCodeRepository.save(newQRCode);
 
@@ -45,8 +44,6 @@ export const generarQRCode = async (req, res) => {
     return res.status(500).json({ message: "Error al generar el código QR", error: error.message });
   }
 };
-
-
 
 
 export default {

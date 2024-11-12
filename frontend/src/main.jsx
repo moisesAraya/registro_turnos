@@ -4,7 +4,7 @@ import Login from '@pages/Login';
 import Home from '@pages/Home';
 import Users from '@pages/Users';
 import Register from '@pages/Register';
-import QRPage from '@pages/QRPage'; // Página de generación de código QR
+import QRPage from '@pages/QRPage'; 
 import Error404 from '@pages/Error404';
 import Root from '@pages/Root';
 import ProtectedRoute from '@components/ProtectedRoute';
