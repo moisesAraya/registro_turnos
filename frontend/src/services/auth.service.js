@@ -1,6 +1,6 @@
 import axios from './root.service.js';
 import cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import { convertirMinusculas } from '@helpers/formatData.js';
 
 export async function login(dataUser) {
@@ -15,7 +15,7 @@ export async function login(dataUser) {
             const { nombreCompleto, email, rut, rol } = jwtDecode(token);
             const userData = { nombreCompleto, email, rut, rol };
             sessionStorage.setItem('usuario', JSON.stringify(userData));
-            localStorage.setItem('token', token); 
+            localStorage.setItem('token', token); // Guardar el token en localStorage
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             cookies.set('jwt-auth', token, { path: '/' });
             return response.data;
