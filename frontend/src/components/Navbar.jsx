@@ -38,11 +38,11 @@ const Navbar = () => {
                     </li>
                     <li>
                         <NavLink 
-                            to="/graph" 
+                            to="/charts" 
                             onClick={() => setMenuOpen(false)} 
                             className={({ isActive }) => (isActive ? 'active' : '')}
                         >
-                            Gráfico
+                            Gráficos
                         </NavLink>
                     </li>
                     {userRole === 'administrador' && (

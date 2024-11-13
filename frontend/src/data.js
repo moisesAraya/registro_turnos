@@ -1,62 +1,50 @@
-export const UserData = [
-    {
-        id: 1,
-        scannedAt: "2021-08-20T10:00:00",
-        userid: 8,
-        qrCodeid: 1
-    },
-    {
-        id: 2,
-        scannedAt: "2021-08-21T10:00:00",
-        userid: 8,
-        qrCodeid: 2
-    },
-    {
-        id: 3,
-        scannedAt: "2021-08-22T10:00:00",
-        userid: 8,
-        qrCodeid: 3
-    },
-    {
-        id: 4,
-        scannedAt: "2021-08-23T10:00:00",
-        userid: 8,
-        qrCodeid: 3
-    },
-    {
-        id: 5,
-        scannedAt: "2021-08-24T10:00:00",
-        userid: 8,
-        qrCodeid: 5
-    },
-    {
-        id: 6,
-        scannedAt: "2021-08-25T10:00:00",
-        userid: 8,
-        qrCodeid: 6
-    },
-    {
-        id: 7,
-        scannedAt: "2021-08-26T10:00:00",
-        userid: 8,
-        qrCodeid: 7
-    },
-    {
-        id: 8,
-        scannedAt: "2021-09-27T10:00:00",
-        userid: 8,
-        qrCodeid: 8
-    },
-    {
-        id: 9,
-        scannedAt: "2021-09-28T10:00:00",
-        userid: 8,
-        qrCodeid: 9
-    },
-    {
-        id: 10,
-        scannedAt: "2021-09-29T10:00:00",
-        userid: 8,
-        qrCodeid: 10
-    } 
-]
+export const LineChartData = {
+    labels: [
+        "Enero", 
+        "Febrero", 
+        "Marzo", 
+        "Abril", 
+        "Mayo", 
+        "Junio", 
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre"
+    ],
+    datasets: [
+        {
+            label: "Horas trabajadas",
+            data: [120, 128, 112, 80, 136, 120, 144, 152, 96, 120, 128, 160],
+            borderColor: "rgb(69, 9, 32, 0.5)",
+        },
+    ],
+};
+
+export const BarChartData = {
+    labels: [
+        "Enero", 
+        "Febrero", 
+        "Marzo", 
+        "Abril", 
+        "Mayo", 
+        "Junio", 
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre"
+    ],
+    datasets: [
+        {
+            label: "Dias trabajados",
+            data: [15, 16, 14, 10, 17, 15, 18, 19, 12, 15, 16, 20],
+            backgroundColor: [
+                "rgba(209, 190, 207, 0.7)",
+                "rgba(160, 210, 219, 0.7)"],
+            borderColor: "rgb(75, 192, 192)",
+        },
+    ],
+};
