@@ -77,7 +77,7 @@ const ScanQRCodeComponent = () => {
       {scanResult ? (
         <p className="scan-result">Código escaneado: {scanResult}</p>
       ) : (
-        <div id="qr-reader" style={{ width: '100%' }}></div> // Renderiza el escáner aquí
+        <div id="qr-reader" style={{ width: '100%' }}></div> 
       )}
     </div>
   );
