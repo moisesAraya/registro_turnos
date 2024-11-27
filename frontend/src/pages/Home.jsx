@@ -1,26 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ScanQRCodeComponent from '../components/ScanQRCodeComponent';
+import '../styles/home.css';
 
 const Home = () => {
-  const [showScanner, setShowScanner] = useState(false);
-  const [userRole, setUserRole] = useState(null);
-
-  useEffect(() => {
-    const role = localStorage.getItem("token");
-    setUserRole(role);
-  }, []);
-
   return (
-    <div>
-      <h1>Bienvenido</h1>
-      {userRole !== "usuario" && (
-        <>
-          <button onClick={() => setShowScanner(!showScanner)}>
-            Escanear QR
-          </button>
-          {showScanner && <ScanQRCodeComponent />}
-        </>
-      )}
+    <div className="home-scanner-container">
+      <div className="scanner-section">
+        <h1>Escáner QR</h1>
+        <ScanQRCodeComponent />
+      </div>
     </div>
   );
 };
