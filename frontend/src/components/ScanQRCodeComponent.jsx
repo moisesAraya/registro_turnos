@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { QrReader } from 'react-qr-reader';
+import { Html5QrcodeScanner } from "html5-qrcode";
 import axios from 'axios';
-import 'webrtc-adapter'; // Importa el adaptador para compatibilidad con navegadores antiguos
-import '../styles/scanqrcomponent.css'; 
+import '../styles/scanqrcomponent.css';
 
 const ScanQRCodeComponent = () => {
   const [scanResult, setScanResult] = useState(null);
@@ -17,17 +16,41 @@ const ScanQRCodeComponent = () => {
     }
   }, []);
 
+  useEffect(() => {
+    // Configura el escáner QR con html5-qrcode
+    const scanner = new Html5QrcodeScanner(
+      "qr-reader", // ID del elemento DOM donde se renderiza
+      { fps: 10, qrbox: { width: 250, height: 250 } } // Configuración de escaneo
+    );
+
+    // Maneja el resultado exitoso del escaneo
+    scanner.render(
+      (decodedText) => {
+        handleScan(decodedText);
+      },
+      (error) => {
+        console.error("Error de escaneo:", error);
+        setErrorMessage("Hubo un problema al intentar escanear el código.");
+      }
+    );
+
+    // Limpia el escáner cuando se desmonta el componente
+    return () => {
+      scanner.clear().catch((error) => {
+        console.error("Error al limpiar el escáner:", error);
+      });
+    };
+  }, [userData]); // El escáner depende de los datos del usuario
+
   const handleScan = async (data) => {
     if (data) {
       setScanResult(data);
 
-      // Verifica si hay información del usuario
       if (!userData) {
         setErrorMessage('No se pudo obtener información del usuario.');
         return;
       }
 
-      // Construye el payload con los datos del escaneo
       const scanPayload = {
         qrContent: data,
         name: userData.name,
@@ -36,7 +59,7 @@ const ScanQRCodeComponent = () => {
       };
 
       try {
-        // Envía los datos del escaneo al backend
+        // Envía los datos al backend
         await axios.post(`${import.meta.env.VITE_BASE_URL}/api/scan`, scanPayload);
         alert('Escaneo exitoso y datos enviados.');
         setErrorMessage('');
@@ -47,20 +70,6 @@ const ScanQRCodeComponent = () => {
     }
   };
 
-  const handleError = (err) => {
-    console.error('Error de escaneo:', err);
-    setErrorMessage('Hubo un problema con la cámara o el navegador no es compatible.');
-  };
-
-  // Verifica soporte de MediaDevices y muestra un mensaje si no es compatible
-  useEffect(() => {
-    if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function') {
-      setErrorMessage(
-        'El navegador no soporta la API de cámara. Por favor, utiliza un navegador más moderno.'
-      );
-    }
-  }, []);
-
   return (
     <div className="qr-container">
       <h2>Escanear Código QR</h2>
@@ -68,13 +77,7 @@ const ScanQRCodeComponent = () => {
       {scanResult ? (
         <p className="scan-result">Código escaneado: {scanResult}</p>
       ) : (
-        <QrReader
-          onResult={(result, error) => {
-            if (result) handleScan(result?.text);
-            if (error) handleError(error);
-          }}
-          className="qr-reader"
-        />
+        <div id="qr-reader" style={{ width: '100%' }}></div> // Renderiza el escáner aquí
       )}
     </div>
   );
