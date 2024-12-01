@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getScanInfo } from '../services/charts.service.js';
-import { LineChart } from '../components/Line.jsx';
-import { BarChart } from '../components/Bar.jsx';
 
-const Charts = () => {
+const Scan = () => {
     const [scans, setScans] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const userData = JSON.parse(sessionStorage.getItem('usuario')) || '';
@@ -13,7 +11,6 @@ const Charts = () => {
             const response = await getScanInfo(email);
             setScans(response);
             setIsLoading(false);
-            console.log(response);
         } catch (error) {
             console.error("Error: ", error);
         }
@@ -23,24 +20,30 @@ const Charts = () => {
         fetchScans();
     }, []);
     return (
-        <div style={{ textAlign: 'center', marginTop: '110px' }}>
+        <div style={{ textAlign: 'left', marginTop: '110px' }}>
+            <h1>Escaneos</h1>
             {isLoading ? (
-                <p>Esperando la informacion...</p>
-            ): (
+                <p>Esperando la data...</p>
+            ) : (
                 <>
-                <h1>Gráficos</h1>
-                <h4>Horas Trabajadas por mes</h4>
-                <div style={{ width: '60%', height: '400px', margin: '0 auto' }}>
-                    <LineChart />
-                </div>
-                <h4>Días trabajados por mes</h4>
-                <div style={{ width: '60%', height: '400px', margin: '0 auto' }}>
-                    <BarChart />
-                </div>
+                {scans.length > 0 ? (
+                    <ul>
+                        {scans.map((scan) => (
+                        <div key={scan.id}>
+                            <li>
+                                <p>Correo electronico: {scan.email}</p>
+                                <p>Fecha escaneo: {scan.scanTime}</p>
+                            </li>
+                        </div>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No hay escaneos disponibles</p>
+                )}
                 </>
             )}
         </div>
     );
 }
 
-export default Charts;
+export default Scan;

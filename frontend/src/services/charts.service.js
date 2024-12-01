@@ -1,20 +1,19 @@
-// Función para obtener los días trabajados en un mes específico
-export const getDiasTrabajadosMes = (month, year) => {
-    // Simulación de datos: número de días trabajados entre 15 y 22
-    const diasTrabajados = Math.floor(Math.random() * (22 - 15 + 1)) + 15;
-    return diasTrabajados;
-};
+import axios from './root.service.js';
 
-// Función para obtener las horas trabajadas en un mes específico
-export const getHorasTrabajadasMes = (month, year) => {
-    // Simulación de datos: número de horas trabajadas entre 120 y 160
-    const horasTrabajadas = Math.floor(Math.random() * (160 - 120 + 1)) + 120;
-    return horasTrabajadas;
-};
+export async function getScanData () {
+    try {
+        const response = await axios.get('/charts/');
+        return response.data.data;
+    } catch (error) {
+        console.error("Error: ", error);
+    }
+}
 
-// Función para obtener las horas trabajadas en un año específico
-export const getHorasTrabajadasYear = (year) => {
-    // Simulación de datos: número de horas trabajadas en el año entre 1800 y 2000
-    const horasTrabajadas = Math.floor(Math.random() * (2000 - 1800 + 1)) + 1800;
-    return horasTrabajadas;
-};
+export async function getScanInfo (email) {
+    try {
+        const response = await axios.get(`/charts/detail/?email=${email}`);
+        return response.data.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}

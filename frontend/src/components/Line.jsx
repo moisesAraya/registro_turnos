@@ -26,7 +26,7 @@ export const LineChart = () => {
         plugins: {
             legend: {
                 display: true,
-                position: 'bottom'
+                position: 'top'
             },
             tittle: {
                 display: true,
@@ -34,9 +34,21 @@ export const LineChart = () => {
             }
         },
         scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Meses',
+                    font: { size: 15 }
+                }
+            },
             y: {
                 beginAtZero: true,
                 min: 0,
+                title: {
+                    display: true,
+                    text: 'Cantidad de horas',
+                    font: { size: 15 }
+                }
             }
         }
     };

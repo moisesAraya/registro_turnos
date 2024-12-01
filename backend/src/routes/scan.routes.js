@@ -1,8 +1,8 @@
 import express from "express";
-import ScanController from "./controllers/ScanController.js";
+import ScanController from "../controllers/scan.controller.js";
 
 const router = express.Router();
 
-router.post("/api/scan", ScanController.registrarEscaneo);
+router.post("/", ScanController.registrarEscaneo);
 
 export default router;

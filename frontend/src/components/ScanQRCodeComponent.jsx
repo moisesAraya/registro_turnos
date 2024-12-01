@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Html5QrcodeScanner } from "html5-qrcode";
-import axios from 'axios';
+import { scanQR } from '../services/scan.service.js';
 import '../styles/scanqrcomponent.css';
 
 const ScanQRCodeComponent = () => {
   const [scanResult, setScanResult] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [userData, setUserData] = useState(null);
-
+  
   useEffect(() => {
     // Obtiene los datos del usuario desde localStorage
-    const storedUser = JSON.parse(localStorage.getItem('userData'));
+    const storedUser = JSON.parse(sessionStorage.getItem('usuario'));
     if (storedUser) {
       setUserData(storedUser);
     }
@@ -60,12 +60,21 @@ const ScanQRCodeComponent = () => {
 
       try {
         // Envía los datos al backend
-        await axios.post(`${import.meta.env.VITE_BASE_URL}/api/scan`, scanPayload);
+        const response = await scanQR(scanPayload);
+        console.log("Datos dsp de la peticion: ", response);
         alert('Escaneo exitoso y datos enviados.');
         setErrorMessage('');
       } catch (error) {
-        console.error('Error al enviar datos de escaneo:', error);
-        setErrorMessage('Hubo un problema al enviar los datos de escaneo.');
+        if(error.response) {
+          console.error('Error en la respuesta del backend: ', error.response.data);
+          setErrorMessage(`Error del servidor: ${error.response.data.message}`);
+        } else if (error.request) {
+          console.error('Error en la respuesta del servidor: ', error.request);
+          setErrorMessage(`No se pudo conectar al servidor`);
+        } else {
+          console.error('Error al configurar la solicitud: ', error.message);
+          setErrorMessage(`Error inesperado al escanear el qr.`);
+        }
       }
     }
   };
