@@ -9,6 +9,7 @@ import Charts from '@pages/Charts';
 import Scan from '@pages/Scan';
 import Error404 from '@pages/Error404';
 import Root from '@pages/Root';
+import AreaSelection from '@pages/AreaSelection';
 import ProtectedRoute from '@components/ProtectedRoute';
 import '@styles/styles.css';
 
@@ -43,6 +44,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={['administrador']}>
             <QRPage /> {/* Página de generación de código QR */}
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/area-selection',
+        element: (
+          <ProtectedRoute allowedRoles={['administrador', 'usuario']}>
+            <AreaSelection /> {/* Página de selección de área */}
           </ProtectedRoute>
         ),
       },
