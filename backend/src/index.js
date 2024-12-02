@@ -1,18 +1,17 @@
 "use strict";
-import dotenv from "dotenv";
-dotenv.config();
-
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import indexRoutes from "./routes/index.routes.js";
 import session from "express-session";
 import passport from "passport";
 import express, { json, urlencoded } from "express";
-import { SERVER_PORT, cookieKey } from "./config/configEnv.js";
+import { cookieKey, HOST, PORT } from "./config/configEnv.js";
 import { connectDB } from "./config/configDb.js";
 import { createUsers } from "./config/initialSetup.js";
 import { passportJwtSetup } from "./auth/passport.auth.js";
-import indexRoutes from "./routes/index.routes.js";
+
+// Importación de rutas adicionales (nuevas funcionalidades)
 import qrCodeRoutes from "./routes/qrcode.routes.js";
 import workAreasRouter from "./routes/workAreas.js";
 import chartsRoutes from "./routes/charts.routes.js";
@@ -21,8 +20,10 @@ async function setupServer() {
   try {
     const app = express();
 
+    // Deshabilitar cabecera "X-Powered-By"
     app.disable("x-powered-by");
 
+    // Configuración de CORS
     app.use(
       cors({
         credentials: true,
@@ -30,6 +31,7 @@ async function setupServer() {
       })
     );
 
+    // Configuración de middlewares
     app.use(
       urlencoded({
         extended: true,
@@ -44,9 +46,9 @@ async function setupServer() {
     );
 
     app.use(cookieParser());
-
     app.use(morgan("dev"));
 
+    // Configuración de sesión
     app.use(
       session({
         secret: cookieKey,
@@ -60,36 +62,40 @@ async function setupServer() {
       })
     );
 
+    // Inicialización de Passport
     app.use(passport.initialize());
     app.use(passport.session());
 
-    passportJwtSetup();
+    passportJwtSetup(); // Configuración de estrategias de Passport
 
-    app.use("/api", indexRoutes);
-    app.use("/api/qrcode", qrCodeRoutes);
-    app.use("/api/work_areas", workAreasRouter); // Agrega la ruta de áreas de trabajo
-    app.use("/api/charts", chartsRoutes); 
+    // Configuración de rutas
+    app.use("/api", indexRoutes); // Ruta base del API
+    app.use("/api/qrcode", qrCodeRoutes); // Nueva ruta para QR Code
+    app.use("/api/work_areas", workAreasRouter); // Nueva ruta para Áreas de Trabajo
+    app.use("/api/charts", chartsRoutes); // Nueva ruta para gráficos
 
-    app.listen(SERVER_PORT, () => {
-      console.log(`=> Servidor corriendo en http://localhost:${SERVER_PORT}/api`);
+    // Inicio del servidor
+    app.listen(PORT, () => {
+      console.log(`=> Servidor corriendo en ${HOST}:${PORT}/api`);
     });
   } catch (error) {
-    console.error("Error en index.js -> setupServer(), el error es:", error);
+    console.log("Error en index.js -> setupServer(), el error es: ", error);
   }
 }
 
 async function setupAPI() {
   try {
-    await connectDB();
-    await setupServer();
-    await createUsers();
+    await connectDB(); // Conexión a la base de datos
+    await setupServer(); // Configuración del servidor
+    await createUsers(); // Creación de usuarios iniciales
   } catch (error) {
-    console.error("Error en index.js -> setupAPI(), el error es:", error);
+    console.log("Error en index.js -> setupAPI(), el error es: ", error);
   }
 }
 
+// Iniciar la API
 setupAPI()
   .then(() => console.log("=> API Iniciada exitosamente"))
   .catch((error) =>
-    console.error("Error en index.js -> setupAPI(), el error es:", error)
+    console.log("Error en index.js -> setupAPI(), el error es: ", error)
   );
