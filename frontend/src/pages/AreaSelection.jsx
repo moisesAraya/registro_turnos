@@ -3,7 +3,7 @@ import AreaSelectionComponent from '@components/AreaSelectionComponent';
 import '@styles/areaSelection.css';
 
 const AreaSelection = () => {
-  // Lista fija de areas de trabajo
+  // Lista fija de áreas de trabajo
   const [areas] = useState([
     { id: 1, work_area: 'Maestro Cocina' },
     { id: 2, work_area: 'Ayudante' },
@@ -13,7 +13,10 @@ const AreaSelection = () => {
     { id: 6, work_area: 'Bartender' },
   ]);
   const [selectedArea, setSelectedArea] = useState(''); 
-  const [responseMessage, setResponseMessage] = useState('');
+  const [responseMessage, setResponseMessage] = useState(''); 
+
+  // Leer la URL base desde el archivo .env del frontend
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const handleSelection = (event) => {
     setSelectedArea(event.target.value);
@@ -24,7 +27,8 @@ const AreaSelection = () => {
     try {
       console.log('Enviando área seleccionada:', selectedArea);
 
-      const response = await fetch('http://localhost:3000/api/work_areas', {
+      // POST al backend
+      const response = await fetch(`${BASE_URL}/work_areas`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ work_area: selectedArea, worker_id: 1 }),
