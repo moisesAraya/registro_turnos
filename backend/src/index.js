@@ -67,12 +67,8 @@ async function setupServer() {
 
     app.use("/api", indexRoutes);
     app.use("/api/qrcode", qrCodeRoutes);
-<<<<<<< HEAD
     app.use("/api/work_areas", workAreasRouter); // Agrega la ruta de áreas de trabajo
     app.use("/api/charts", chartsRoutes); 
-=======
-    app.use("/api/work_areas", workAreasRouter);
->>>>>>> 359d70b (Avance en frontend y conexion con backend de la seleccion del area de trabajo)
 
     app.listen(SERVER_PORT, () => {
       console.log(`=> Servidor corriendo en http://localhost:${SERVER_PORT}/api`);
