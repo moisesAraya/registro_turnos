@@ -6,7 +6,6 @@ import Users from '@pages/Users';
 import Register from '@pages/Register';
 import QRPage from '@pages/QRPage'; 
 import Charts from '@pages/Charts';
-import Scan from '@pages/Scan';
 import Error404 from '@pages/Error404';
 import Root from '@pages/Root';
 import AreaSelection from '@pages/AreaSelection';
@@ -26,10 +25,6 @@ const router = createBrowserRouter([
       {
         path: '/charts',
         element: <Charts />
-      },
-      {
-        path: '/prueba',
-        element: <Scan />
       },
       {
         path: '/users',

@@ -45,15 +45,6 @@ const Navbar = () => {
                             Gráficos
                         </NavLink>
                     </li>
-                    <li>
-                        <NavLink
-                            to="/prueba"
-                            onClick={() => setMenuOpen(false)}
-                            className={({ isActive }) => (isActive ? 'active' : '')}
-                        >
-                            Prueba
-                        </NavLink>
-                    </li>
                     {userRole === 'administrador' && (
                         <>
                             <li>

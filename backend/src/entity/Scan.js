@@ -19,8 +19,13 @@ export const Scan = new EntitySchema({
     email: {
       type: "text",
     },
-    scanTime: {
+    scanStartTime: {
       type: "timestamp",
+      nullable: false,
+    },
+    scanEndTime: {
+      type: "timestamp",
+      nullable: true,
     },
   },
 });

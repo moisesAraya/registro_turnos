@@ -25,15 +25,58 @@ export async function getScanDetailService(query){
 
         const scanRepository = AppDataSource.getRepository(Scan);
 
-        const scanDetail = await scanRepository.find({
-            select: ["id", "email", "scanTime"],
-            order: {
-            scanTime: "ASC"
-            },
-            where: { email: email },
+        const scanDetailByMonth = await scanRepository
+            .createQueryBuilder("scan")
+            .select("DATE_TRUNC('month', scan.scanStartTime) as month")
+            .addSelect("COUNT(*)", "count")
+            .where("scan.email = :email", { email })
+            .groupBy("month")
+            .orderBy("month", "ASC")
+            .getRawMany();
+        // .find({
+        //     select: ["id", "email", "scanStartTime"],
+        //     order: {
+        //     scanStartTime: "ASC"
+        //     },
+        //     where: { email: email },
+        // });
+
+        const monthData = Array(12).fill(0);
+
+        scanDetailByMonth.forEach((scan) => {
+            const monthIndex = new Date(scan.month).getUTCMonth();
+            monthData[monthIndex] = parseInt(scan.count, 10);
         });
 
-        return [scanDetail, null];
+        const BarChartData = {
+            labels: [
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre",
+            ],
+            datasets: [
+                {
+                    label: "Días trabajados",
+                    data: monthData,
+                    // backgroundColor: [
+                    //     "rgba(209, 190, 207, 0.7)",
+                    //     "rgba(160, 210, 219, 0.7)",
+                    // ],
+                    // borderColor: "rgb(75, 192, 192)",
+                },
+            ],
+        };
+
+        return [BarChartData, null];
     } catch (error) {
         console.error("Error al obtener los datos del escaneo:", error);
         return [null, "Error interno del servidor"];
