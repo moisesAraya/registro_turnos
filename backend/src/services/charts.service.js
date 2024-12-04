@@ -33,13 +33,6 @@ export async function getScanDetailService(query){
             .groupBy("month")
             .orderBy("month", "ASC")
             .getRawMany();
-        // .find({
-        //     select: ["id", "email", "scanStartTime"],
-        //     order: {
-        //     scanStartTime: "ASC"
-        //     },
-        //     where: { email: email },
-        // });
 
         const monthData = Array(12).fill(0);
 
@@ -67,11 +60,6 @@ export async function getScanDetailService(query){
                 {
                     label: "Días trabajados",
                     data: monthData,
-                    // backgroundColor: [
-                    //     "rgba(209, 190, 207, 0.7)",
-                    //     "rgba(160, 210, 219, 0.7)",
-                    // ],
-                    // borderColor: "rgb(75, 192, 192)",
                 },
             ],
         };

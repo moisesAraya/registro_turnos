@@ -23,10 +23,6 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: '/charts',
-        element: <Charts />
-      },
-      {
         path: '/users',
         element: (
           <ProtectedRoute allowedRoles={['administrador']}>
@@ -47,6 +43,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={['administrador', 'usuario']}>
             <AreaSelection /> {/* Página de selección de área */}
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/charts',
+        element: (
+          <ProtectedRoute allowedRoles={['administrador', 'usuario']}>
+            <Charts />
           </ProtectedRoute>
         ),
       },
