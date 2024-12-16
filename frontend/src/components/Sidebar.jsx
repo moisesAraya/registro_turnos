@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { FaHome, FaUserFriends, FaChartBar, FaCalendarAlt, FaClock, FaSignOutAlt } from "react-icons/fa"; // Importa el icono FaClock
-import "../styles/Sidebar.css";
+import "../styles/sidebar.css";
 
 const Sidebar = () => {
   const user = JSON.parse(sessionStorage.getItem("usuario")); // Obtener información del usuario
