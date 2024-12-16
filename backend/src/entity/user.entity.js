@@ -66,13 +66,6 @@ const UserSchema = new EntitySchema({
       unique: true,
     },
   ],
-  relations: {
-    workAreas: {
-      target: "WorkArea",
-      type: "one-to-many",
-      inverseSide: "user",
-    }
-  },  
 });
 
 export default UserSchema;

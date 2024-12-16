@@ -13,8 +13,8 @@ export const WorkArea = new EntitySchema({
             type: "int",
             nullable: false,
         },
-        work_area: {
-            type: "varchar",
+        work_area_id: {
+            type: "int",
             nullable: false,
         },
         shift_date: {
@@ -22,15 +22,5 @@ export const WorkArea = new EntitySchema({
             nullable: false,
             default: () => "CURRENT_DATE",
         },
-    },
-    relations: {
-        user: {
-            target: "User",
-            type: "many-to-one",
-            joinColumn: {
-                name: "worker_id",
-                referencedColumnName: "id",
-            },
-        }
     },
 });

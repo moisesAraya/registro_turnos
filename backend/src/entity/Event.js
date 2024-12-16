@@ -15,8 +15,7 @@ const Event = new EntitySchema({
       nullable: false,
     },
     createdBy: {
-      type: "varchar",
-      length: 100,
+      type: "int",
       nullable: false,
     },
     shift: {
@@ -27,6 +26,16 @@ const Event = new EntitySchema({
     createdAt: {
       type: "timestamp",
       createDate: true, 
+    },
+  },
+  relations: {
+    user: {
+      target: "User",
+      type: "many-to-one",
+      joinColumn: {
+        name: "createdBy",
+        referencedColumnName: "id",
+      },
     },
   },
 });
