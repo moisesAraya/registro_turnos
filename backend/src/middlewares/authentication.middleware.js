@@ -20,7 +20,7 @@ export function authenticateJwt(req, res, next) {
       });
     }
 
-    req.user = user;
+    req.user = user; // Usuario autenticado
     next();
   })(req, res, next);
 }

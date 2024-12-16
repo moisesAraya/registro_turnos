@@ -1,14 +1,15 @@
-"use strict";
 import { Router } from "express";
-import userRoutes from "./user.routes.js";
 import authRoutes from "./auth.routes.js";
-import scanRoutes from "./scan.routes.js";
+import userRoutes from "./user.routes.js";
+import attendanceRoutes from "./attendance.routes.js"; 
+
 
 const router = Router();
 
 router
-    .use("/auth", authRoutes)
-    .use("/user", userRoutes)
-    .use("/scan", scanRoutes);
+  .use("/auth", authRoutes)
+  .use("/user", userRoutes)
+  .use("/attendance", attendanceRoutes);
+  
 
 export default router;

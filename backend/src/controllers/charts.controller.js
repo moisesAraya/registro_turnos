@@ -1,66 +1,26 @@
-import { 
-    getScanDetailService,
-    getScanInfo
-} from "../services/charts.service.js";
-import {
-    handleErrorClient,
-    handleErrorServer,
-    handleSuccess,
-} from "../handlers/responseHandlers.js";
-import { userQueryValidation } from "../validations/user.validation.js";
-
-export const getCharts = async (req, res) => {
-    try {
-        const [scans, errorScans] = await getScanInfo();
-
-        if (errorScans) return handleErrorClient(res, 404, errorScans);
-
-        scans.length === 0
-        ? handleSuccess(res, 204)
-        : handleSuccess(res, 200, "Escaneos encontrados", scans);
-    } catch (error) {
-        handleErrorServer(
-            res,
-            500,
-            error.message,
-        );
-    }
-};
-
-export const getChartsDetail = async (req, res) => {
-    try {
-        const { email } = req.query;
-        const { error: queryError } = userQueryValidation.validate({
-            email,
-        });
-
-        if (queryError) {
-            return handleErrorClient(
-                res,
-                400,
-                "Error en la validación de la consulta",
-                queryError.message,
-            );
-        }
-
-        const [scanDetail, errorScanDetail] = await getScanDetailService({ email });
-
-        if (errorScanDetail) return handleErrorClient(res, 404, "Error obteniendo datos", errorScanDetail);
-
-        handleSuccess(res, 200, "Detalle de escaneo encontrado", scanDetail);
-    } catch (error) {
-        handleErrorServer(
-            res,
-            500,
-            error.message,
-        );
-    }
-};
-
 export const getChartsFormatted = async (req, res) => {
     try {
-        
+      const scanRepository = AppDataSource.getRepository(Scan);
+  
+      // Agrupar registros por fecha
+      const datos = await scanRepository
+        .createQueryBuilder("scan")
+        .select("DATE(scan.scanTime)", "fecha")
+        .addSelect("COUNT(scan.id)", "cantidad")
+        .groupBy("fecha")
+        .orderBy("fecha", "ASC")
+        .getRawMany();
+  
+      // Formatear datos para el frontend
+      const chartData = datos.map((item) => ({
+        date: item.fecha,
+        count: item.cantidad,
+      }));
+  
+      res.status(200).json({ message: "Datos formateados", data: chartData });
     } catch (error) {
-        
+      console.error("Error al obtener datos formateados:", error);
+      res.status(500).json({ message: "Error al obtener datos." });
     }
-};
+  };
+  

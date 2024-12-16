@@ -1,0 +1,66 @@
+.events-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #5c3d2e;
+}
+
+.create-event textarea,
+.create-event select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #d1bfa7;
+  border-radius: 5px;
+}
+
+.create-event button {
+  background-color: #8c6954;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.create-event button:hover {
+  background-color: #5c3d2e;
+}
+
+.events-list {
+  margin-top: 20px;
+}
+
+.event-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f5ece6;
+  padding: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #d1bfa7;
+  border-radius: 5px;
+}
+
+.event-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  margin-left: 10px;
+}
+
+.edit-btn {
+  color: #a67b5b;
+}
+
+.edit-btn:hover {
+  color: #5c3d2e;
+}
+
+.delete-btn {
+  color: #e74c3c;
+}
+
+.delete-btn:hover {
+  color: #c0392b;
+}

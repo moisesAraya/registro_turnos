@@ -2,7 +2,6 @@
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import indexRoutes from "./routes/index.routes.js";
 import session from "express-session";
 import passport from "passport";
 import express, { json, urlencoded } from "express";
@@ -11,27 +10,29 @@ import { connectDB } from "./config/configDb.js";
 import { createUsers } from "./config/initialSetup.js";
 import { passportJwtSetup } from "./auth/passport.auth.js";
 
-// Importación de rutas adicionales (nuevas funcionalidades)
-import qrCodeRoutes from "./routes/qrcode.routes.js";
+// Importación de rutas
+import indexRoutes from "./routes/index.routes.js"; // Rutas principales
 import workAreasRouter from "./routes/workAreas.js";
 import chartsRoutes from "./routes/charts.routes.js";
+import eventRoutes from "./routes/event.routes.js"; // Rutas de eventos
+import attendanceRoutes from "./routes/attendance.routes.js"; // Rutas de asistencia
 
 async function setupServer() {
   try {
     const app = express();
 
-    // Deshabilitar cabecera "X-Powered-By"
+    // Deshabilitar cabecera "X-Powered-By" para seguridad
     app.disable("x-powered-by");
 
     // Configuración de CORS
     app.use(
       cors({
         credentials: true,
-        origin: true,
+        origin: true, // Permitir todas las solicitudes por ahora (ajustar en producción)
       })
     );
 
-    // Configuración de middlewares
+    // Middlewares generales
     app.use(
       urlencoded({
         extended: true,
@@ -46,7 +47,7 @@ async function setupServer() {
     );
 
     app.use(cookieParser());
-    app.use(morgan("dev"));
+    app.use(morgan("dev")); // Logger de solicitudes
 
     // Configuración de sesión
     app.use(
@@ -55,7 +56,7 @@ async function setupServer() {
         resave: false,
         saveUninitialized: false,
         cookie: {
-          secure: false,
+          secure: false, // Cambiar a true si usas HTTPS
           httpOnly: true,
           sameSite: "strict",
         },
@@ -66,20 +67,39 @@ async function setupServer() {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    passportJwtSetup(); // Configuración de estrategias de Passport
+    // Configuración de estrategias de Passport
+    passportJwtSetup();
 
     // Configuración de rutas
     app.use("/api", indexRoutes); // Ruta base del API
-    app.use("/api/qrcode", qrCodeRoutes); // Nueva ruta para QR Code
-    app.use("/api/work_areas", workAreasRouter); // Nueva ruta para Áreas de Trabajo
-    app.use("/api/charts", chartsRoutes); // Nueva ruta para gráficos
+    app.use("/api/work_areas", workAreasRouter); // Ruta para áreas de trabajo
+    app.use("/api/charts", chartsRoutes); // Ruta para gráficos
+    app.use("/api/events", eventRoutes); // Ruta para eventos
+    app.use("/api/attendance", attendanceRoutes); // Ruta para asistencia
+
+    // Middleware de error 404 (ruta no encontrada)
+    app.use((req, res, next) => {
+      res.status(404).json({
+        message: "La ruta solicitada no existe.",
+      });
+    });
+
+    // Middleware de error general
+    app.use((err, req, res, next) => {
+      console.error("Error del servidor:", err.message);
+      res.status(500).json({
+        message: "Error interno del servidor",
+        error: err.message,
+      });
+    });
 
     // Inicio del servidor
     app.listen(PORT, () => {
       console.log(`=> Servidor corriendo en ${HOST}:${PORT}/api`);
     });
   } catch (error) {
-    console.log("Error en index.js -> setupServer(), el error es: ", error);
+    console.error("Error en setupServer:", error.message);
+    process.exit(1);
   }
 }
 
@@ -89,13 +109,11 @@ async function setupAPI() {
     await setupServer(); // Configuración del servidor
     await createUsers(); // Creación de usuarios iniciales
   } catch (error) {
-    console.log("Error en index.js -> setupAPI(), el error es: ", error);
+    console.error("Error en setupAPI:", error.message);
   }
 }
 
 // Iniciar la API
 setupAPI()
   .then(() => console.log("=> API Iniciada exitosamente"))
-  .catch((error) =>
-    console.log("Error en index.js -> setupAPI(), el error es: ", error)
-  );
+  .catch((error) => console.error("Error al iniciar la API:", error.message));

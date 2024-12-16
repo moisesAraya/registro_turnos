@@ -2,10 +2,10 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from '@pages/Login';
 import Home from '@pages/Home';
+import EventsPage from './pages/EventPage';
 import Users from '@pages/Users';
 import Register from '@pages/Register';
-import QRPage from '@pages/QRPage'; 
-import Charts from '@pages/Charts';
+  import Charts from '@pages/Charts';
 import Error404 from '@pages/Error404';
 import Root from '@pages/Root';
 import AreaSelection from '@pages/AreaSelection';
@@ -31,18 +31,19 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/qr',
+        path: "/events",
         element: (
-          <ProtectedRoute allowedRoles={['administrador']}>
-            <QRPage /> {/* Página de generación de código QR */}
+          <ProtectedRoute allowedRoles={["administrador"]}>
+            <EventsPage />
           </ProtectedRoute>
         ),
       },
+      
       {
         path: '/area-selection',
         element: (
           <ProtectedRoute allowedRoles={['administrador', 'usuario']}>
-            <AreaSelection /> {/* Página de selección de área */}
+            <AreaSelection /> 
           </ProtectedRoute>
         ),
       },

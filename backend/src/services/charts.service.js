@@ -1,5 +1,4 @@
 "use strict";
-import { Scan } from "../entity/Scan.js";
 import { AppDataSource } from "../config/configDb.js";
 
 export async function getScanInfo(){

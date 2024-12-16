@@ -1,0 +1,58 @@
+.layout {
+    display: flex;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #4b2e2e;
+    color: white;
+  }
+  
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #f8f8f8;
+  }
+  
+  /* Encabezado superior */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 0.8rem 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .header-date {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #4b2e2e;
+  }
+  
+  .header-user {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #4b2e2e;
+  }
+  
+  .user-icon {
+    width: 35px;
+    height: 35px;
+    background-color: #b87333;
+    border-radius: 50%;
+    margin-left: 0.5rem;
+  }
+  
+  .page-content {
+    padding: 1.5rem;
+    overflow-y: auto;
+    height: calc(100% - 60px); /* Resta la altura del encabezado */
+  }
+  
