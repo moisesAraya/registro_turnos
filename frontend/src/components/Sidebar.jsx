@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaHome, FaUserFriends, FaChartBar, FaCalendarAlt, FaSignOutAlt } from "react-icons/fa";
+import { FaHome, FaUserFriends, FaChartBar, FaCalendarAlt, FaClock, FaSignOutAlt } from "react-icons/fa"; // Importa el icono FaClock
 import "../styles/Sidebar.css";
 
 const Sidebar = () => {
@@ -15,23 +15,31 @@ const Sidebar = () => {
             <FaHome /> Inicio
           </NavLink>
         </li>
-        <li>
-          <NavLink to="/users" className={({ isActive }) => (isActive ? "active" : "")}>
-            <FaUserFriends /> Usuarios
-          </NavLink>
-        </li>
+        {user?.rol === "administrador" && (
+          <li>
+            <NavLink to="/users" className={({ isActive }) => (isActive ? "active" : "")}>
+              <FaUserFriends /> Usuarios
+            </NavLink>
+          </li>
+        )}
         <li>
           <NavLink to="/charts" className={({ isActive }) => (isActive ? "active" : "")}>
             <FaChartBar /> Gráficos
           </NavLink>
         </li>
-        {/* Mostrar Eventos solo para administradores */}
         {user?.rol === "administrador" && (
-          <li>
-            <NavLink to="/events" className={({ isActive }) => (isActive ? "active" : "")}>
-              <FaCalendarAlt /> Eventos
-            </NavLink>
-          </li>
+          <>
+            <li>
+              <NavLink to="/events" className={({ isActive }) => (isActive ? "active" : "")}>
+                <FaCalendarAlt /> Eventos
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/shifts" className={({ isActive }) => (isActive ? "active" : "")}>
+                <FaClock /> Turnos
+              </NavLink>
+            </li>
+          </>
         )}
         <li>
           <NavLink to="/auth" className={({ isActive }) => (isActive ? "active" : "")}>

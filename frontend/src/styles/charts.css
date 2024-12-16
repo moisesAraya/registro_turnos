@@ -1,0 +1,21 @@
+.chart-block {
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 10px auto;
+    max-width: 90%;
+    border-radius: 20px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.small-block {
+    max-width: 200px;
+    margin: 0 auto;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+}
+#charts-page-container {
+    margin: 0 auto;
+    padding: 0 40px;
+    max-width: 1200px;
+}

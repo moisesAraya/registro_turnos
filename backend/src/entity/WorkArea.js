@@ -23,4 +23,14 @@ export const WorkArea = new EntitySchema({
             default: () => "CURRENT_DATE",
         },
     },
+    relations: {
+        user: {
+            target: "User",
+            type: "many-to-one",
+            joinColumn: {
+                name: "worker_id",
+                referencedColumnName: "id",
+            },
+        }
+    },
 });

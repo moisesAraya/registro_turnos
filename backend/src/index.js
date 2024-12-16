@@ -14,8 +14,7 @@ import { passportJwtSetup } from "./auth/passport.auth.js";
 import indexRoutes from "./routes/index.routes.js"; // Rutas principales
 import workAreasRouter from "./routes/workAreas.js";
 import chartsRoutes from "./routes/charts.routes.js";
-import eventRoutes from "./routes/event.routes.js"; // Rutas de eventos
-import attendanceRoutes from "./routes/attendance.routes.js"; // Rutas de asistencia
+import shiftRoutes from "./routes/shifts.routes.js"; // Nueva ruta para Turnos
 
 async function setupServer() {
   try {
@@ -72,26 +71,9 @@ async function setupServer() {
 
     // Configuración de rutas
     app.use("/api", indexRoutes); // Ruta base del API
-    app.use("/api/work_areas", workAreasRouter); // Ruta para áreas de trabajo
+    app.use("/api/work_areas", workAreasRouter); // Ruta para Áreas de Trabajo
     app.use("/api/charts", chartsRoutes); // Ruta para gráficos
-    app.use("/api/events", eventRoutes); // Ruta para eventos
-    app.use("/api/attendance", attendanceRoutes); // Ruta para asistencia
-
-    // Middleware de error 404 (ruta no encontrada)
-    app.use((req, res, next) => {
-      res.status(404).json({
-        message: "La ruta solicitada no existe.",
-      });
-    });
-
-    // Middleware de error general
-    app.use((err, req, res, next) => {
-      console.error("Error del servidor:", err.message);
-      res.status(500).json({
-        message: "Error interno del servidor",
-        error: err.message,
-      });
-    });
+    app.use("/api/shifts", shiftRoutes); // Nueva ruta para Turnos
 
     // Inicio del servidor
     app.listen(PORT, () => {

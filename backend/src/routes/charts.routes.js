@@ -1,10 +1,14 @@
-import express from "express";
-import { getChartsFormatted } from "../controllers/charts.controller.js";
-import { authenticateJwt } from "../middlewares/authentication.middleware.js";
+import { Router } from "express";
+import {
+    getChartDays,
+    getChartHours,
+    getChartDetails
+} from "../controllers/charts.controller.js";
 
-const router = express.Router();
+const router = Router();
 
-// Ruta para datos de gráficos
-router.get("/formatted", authenticateJwt, getChartsFormatted);
+router.get("/days", getChartDays);
+router.get("/hours", getChartHours);
+router.get("/details", getChartDetails);
 
 export default router;

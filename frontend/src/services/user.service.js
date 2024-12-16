@@ -3,7 +3,7 @@ import { formatUserData } from '@helpers/formatData.js';
 
 export async function getUsers() {
     try {
-        const { data } = await axios.get('/user/');
+        const { data } = await axios.get('/users/');
         const formattedData = data.data.map(formatUserData);
         return formattedData;
     } catch (error) {
@@ -13,7 +13,7 @@ export async function getUsers() {
 
 export async function updateUser(data, rut) {
     try {
-        const response = await axios.patch(`/user/detail/?rut=${rut}`, data);
+        const response = await axios.patch(`/users/detail/?rut=${rut}`, data);
         console.log(response);
         return response.data.data;
     } catch (error) {
@@ -24,7 +24,7 @@ export async function updateUser(data, rut) {
 
 export async function deleteUser(rut) {
     try {
-        const response = await axios.delete(`/user/detail/?rut=${rut}`);
+        const response = await axios.delete(`/users/detail/?rut=${rut}`);
         return response.data;
     } catch (error) {
         return error.response.data;

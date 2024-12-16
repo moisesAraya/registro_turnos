@@ -1,26 +1,70 @@
-export const getChartsFormatted = async (req, res) => {
+import { 
+    getAttendanceDaysService,
+    getAttendanceHoursService
+} from "../services/charts.service.js"; 
+import {
+    handleErrorClient,
+    handleErrorServer,
+    handleSuccess,
+} from "../handlers/responseHandlers.js";
+import { userQueryValidation } from "../validations/user.validation.js";
+
+export const getChartDays = async (req, res) => {
     try {
-      const scanRepository = AppDataSource.getRepository(Scan);
-  
-      // Agrupar registros por fecha
-      const datos = await scanRepository
-        .createQueryBuilder("scan")
-        .select("DATE(scan.scanTime)", "fecha")
-        .addSelect("COUNT(scan.id)", "cantidad")
-        .groupBy("fecha")
-        .orderBy("fecha", "ASC")
-        .getRawMany();
-  
-      // Formatear datos para el frontend
-      const chartData = datos.map((item) => ({
-        date: item.fecha,
-        count: item.cantidad,
-      }));
-  
-      res.status(200).json({ message: "Datos formateados", data: chartData });
+        const { email, year, area } = req.query;
+
+        const { error: queryError } = userQueryValidation.validate({ email });
+        if (queryError) {
+            return handleErrorClient(
+                res,
+                400,
+                "Error en la validación de la consulta",
+                queryError.message
+            );
+        }
+
+        const [data, error] = await getAttendanceDaysService({ email, year, area });
+        if (error) {
+            return handleErrorClient(res, 404, "Error al obtener días trabajados", error);
+        }
+
+        handleSuccess(res, 200, "Días trabajados obtenidos exitosamente", data);
     } catch (error) {
-      console.error("Error al obtener datos formateados:", error);
-      res.status(500).json({ message: "Error al obtener datos." });
+        handleErrorServer(res, 500, error.message);
     }
-  };
-  
+};
+
+export const getChartHours = async (req, res) => {
+    try {
+        const { email, year, area } = req.query;
+
+        const { error: queryError } = userQueryValidation.validate({ email });
+        if (queryError) {
+            return handleErrorClient(
+                res,
+                400,
+                "Error en la validación de la consulta",
+                queryError.message
+            );
+        }
+
+        const [data, error] = await getAttendanceHoursService({ email, year, area });
+        if (error) {
+            return handleErrorClient(res, 404, "Error al obtener horas trabajadas", error);
+        }
+
+        handleSuccess(res, 200, "Horas trabajadas obtenidas exitosamente", data);
+    } catch (error) {
+        handleErrorServer(res, 500, error.message);
+    }
+};
+
+// Define `getChartDetails` si es necesario
+export const getChartDetails = async (req, res) => {
+    try {
+        // Implementar lógica para `getChartDetails` si aplica
+        handleSuccess(res, 200, "Detalles de gráficos no implementados");
+    } catch (error) {
+        handleErrorServer(res, 500, error.message);
+    }
+};
