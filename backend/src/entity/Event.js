@@ -1,8 +1,8 @@
 import { EntitySchema } from "typeorm";
 
 const Event = new EntitySchema({
-  name: "Event", // Nombre de la entidad en TypeORM
-  tableName: "events", // Nombre de la tabla en la base de datos
+  name: "Event",
+  tableName: "events",
   columns: {
     id: {
       primary: true,
@@ -16,7 +16,7 @@ const Event = new EntitySchema({
     },
     createdBy: {
       type: "int",
-      nullable: false,
+      nullable: true, // Temporalmente permitir valores NULL
     },
     shift: {
       type: "varchar",
@@ -25,7 +25,7 @@ const Event = new EntitySchema({
     },
     createdAt: {
       type: "timestamp",
-      createDate: true, 
+      createDate: true,
     },
   },
   relations: {
