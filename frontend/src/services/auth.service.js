@@ -14,8 +14,17 @@ export async function login(dataUser) {
 
         if (status === 200) {
             const token = data.data.token; // Obtener el token correctamente
-            const { nombreCompleto, email, rut, rol } = jwtDecode(token);
-            const userData = { nombreCompleto, email, rut, rol };
+            const decoded = jwtDecode(token); // Decodificar el token
+
+            // Extraer el ID y demás datos del token decodificado
+            const { id, nombreCompleto, email, rut, rol } = decoded;
+
+            if (!id) {
+                console.error("El token no contiene el ID del usuario.");
+                throw new Error("Token inválido: falta el ID del usuario.");
+            }
+
+            const userData = { id, nombreCompleto, email, rut, rol };
 
             // Guardar datos del usuario y token en sessionStorage
             sessionStorage.setItem('usuario', JSON.stringify(userData));
@@ -59,6 +68,9 @@ export async function logout() {
         sessionStorage.removeItem('usuario');
         sessionStorage.removeItem('token');
         cookies.remove('jwt-auth');
+
+        // Limpiar encabezados globales
+        delete axios.defaults.headers.common['Authorization'];
     } catch (error) {
         console.error("Error al cerrar sesión:", error);
     }

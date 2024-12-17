@@ -14,15 +14,14 @@ function Root() {
 
 function PageRoot() {
   // Obtener la fecha actual
-  const today = new Date().toLocaleDateString('en-US', {
+  const today = new Date().toLocaleDateString('es-ES', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
 
-  // Simular nombre del usuario (debe venir de tu AuthContext o sesión)
-  const userName = "Admin"; // Reemplázalo con datos dinámicos desde AuthContext
+  const userName = "Bienvenido! :)"; 
 
   return (
     <div className="layout">

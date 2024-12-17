@@ -19,8 +19,10 @@ export const registerAttendance = async (req, res) => {
 
     await attendanceRepository.save(newAttendance);
 
-    res.status(201).json({ message: "Asistencia registrada exitosamente." });
-  } catch (error) {
+    res.status(201).json({
+      success: true,
+      message: "Asistencia registrada exitosamente."
+    });  } catch (error) {
     console.error("Error al registrar asistencia:", error.message);
     res.status(500).json({ message: "Error interno del servidor." });
   }

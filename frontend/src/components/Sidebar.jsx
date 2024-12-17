@@ -24,7 +24,7 @@ const Sidebar = () => {
         )}
         <li>
           <NavLink to="/charts" className={({ isActive }) => (isActive ? "active" : "")}>
-            <FaChartBar /> Gráficos
+            <FaChartBar /> Datos
           </NavLink>
         </li>
         {user?.rol === "administrador" && (

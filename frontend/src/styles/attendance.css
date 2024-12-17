@@ -1,0 +1,113 @@
+/* Contenedor principal */
+.attendance-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9ede5; /* Fondo similar al dashboard */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 2rem auto;
+  }
+  
+  /* Título */
+  .attendance-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #5c2b10; /* Marrón oscuro para el título */
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Botón principal */
+  .attendance-button {
+    background-color: #a35b2c; /* Botón similar al del sidebar */
+    color: #ffffff; /* Texto blanco */
+    border: none;
+    border-radius: 6px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .attendance-button:hover {
+    background-color: #8b4e23; /* Color más oscuro en hover */
+  }
+  
+  /* Mensajes de error */
+  .attendance-error {
+    color: #d9534f; /* Rojo similar al alert de errores */
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    font-weight: 500;
+  }
+  
+  /* Mensajes de éxito */
+  .attendance-success {
+    color: #5cb85c; /* Verde para éxito */
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    font-weight: 500;
+  }
+  
+  /* Modal para seleccionar área */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro transparente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: #ffffff; /* Blanco */
+    border-radius: 8px;
+    padding: 2rem;
+    width: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  .modal-content h3 {
+    color: #5c2b10; /* Marrón oscuro */
+    margin-bottom: 1rem;
+  }
+  
+  .area-select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .modal-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .confirm-button,
+  .cancel-button {
+    background-color: #a35b2c;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .confirm-button:hover,
+  .cancel-button:hover {
+    background-color: #8b4e23;
+  }
+  
