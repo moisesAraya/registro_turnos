@@ -33,8 +33,8 @@ const Event = new EntitySchema({
       target: "User",
       type: "many-to-one",
       joinColumn: {
-        name: "createdBy",
-        referencedColumnName: "id",
+        name: "createdBy", // Columna en la tabla events
+        referencedColumnName: "id", // Columna referenciada en la tabla users
       },
     },
   },

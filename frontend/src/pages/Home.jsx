@@ -22,7 +22,7 @@ const HomePage = () => {
 
   return (
     <div className="home-container">
-      <Attendance user={user} />
+        <Attendance user={user} />
     </div>
   );
 };

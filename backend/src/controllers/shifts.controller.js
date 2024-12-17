@@ -1,14 +1,13 @@
-import { startShiftService, endShiftService } from "../services/shift.service.js";
+// src/controllers/shifts.controller.js
+import { endShiftService, startShiftService, getActiveShiftForUser } from "../services/shift.service.js";
 import { handleErrorServer, handleSuccess } from "../handlers/responseHandlers.js";
 
 // Controlador para iniciar turno
 export const startShift = async (req, res) => {
   try {
-    const user = req.user; // Usuario autenticado desde el middleware
+    const user = req.user;
     const [shift, error] = await startShiftService(user);
-
     if (error) return res.status(500).json({ message: error });
-
     return handleSuccess(res, 201, "Turno iniciado exitosamente", shift);
   } catch (error) {
     console.error("Error al iniciar turno:", error.message);
@@ -19,11 +18,9 @@ export const startShift = async (req, res) => {
 // Controlador para terminar turno
 export const endShift = async (req, res) => {
   try {
-    const user = req.user; // Usuario autenticado desde el middleware
+    const user = req.user;
     const [shift, error] = await endShiftService(user);
-
     if (error) return res.status(500).json({ message: error });
-
     return handleSuccess(res, 200, "Turno terminado exitosamente", shift);
   } catch (error) {
     console.error("Error al terminar turno:", error.message);
@@ -31,30 +28,15 @@ export const endShift = async (req, res) => {
   }
 };
 
-// Controlador para obtener turnos activos
+// Controlador para obtener turno activo
 export const getActiveShifts = async (req, res) => {
   try {
-    const [shifts, error] = await getActiveShiftsService();
-
-    if (error) return res.status(500).json({ message: error });
-
-    return handleSuccess(res, 200, "Turnos activos obtenidos", shifts);
+    const user = req.user;
+    const [shift, error] = await getActiveShiftForUser(user);
+    if (error) return res.status(404).json({ message: error });
+    return handleSuccess(res, 200, "Turno activo obtenido", { shift_id: shift.id });
   } catch (error) {
-    console.error("Error al obtener turnos activos:", error.message);
-    return handleErrorServer(res, 500, "Error interno al obtener turnos.");
-  }
-};
-
-// Controlador para obtener todos los turnos
-export const getAllShifts = async (req, res) => {
-  try {
-    const [shifts, error] = await getAllShiftsService();
-
-    if (error) return res.status(500).json({ message: error });
-
-    return handleSuccess(res, 200, "Lista de turnos obtenida", shifts);
-  } catch (error) {
-    console.error("Error al obtener los turnos:", error.message);
-    return handleErrorServer(res, 500, "Error interno al obtener los turnos.");
+    console.error("Error al obtener el turno activo:", error.message);
+    return handleErrorServer(res, 500, "Error interno al obtener el turno activo.");
   }
 };
