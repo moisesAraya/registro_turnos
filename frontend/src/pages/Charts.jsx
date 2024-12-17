@@ -70,7 +70,7 @@ const Charts = () => {
     const nameArea = areas.find(area => area.id === selectedArea)?.work_area || 'Todas las áreas';
 
     return  (
-        <div id="charts-page-container" style={{ textAlign: 'center', marginTop: '90px' }}>
+        <div id="charts-page-container" style={{ textAlign: 'center' }}>
             <div className="chart-block">
                     <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: '20px', marginTop: '5px',  }}>
                         <button

@@ -1,13 +1,39 @@
 import { 
-    getAttendanceDaysService,
-    getAttendanceHoursService
-} from "../services/charts.service.js"; 
-import {
-    handleErrorClient,
-    handleErrorServer,
-    handleSuccess,
-} from "../handlers/responseHandlers.js";
+    handleErrorClient, 
+    handleErrorServer, 
+    handleSuccess } from "../handlers/responseHandlers.js";
+import { getDaysMonthYearService } from "../services/charts.service.js";
 import { userQueryValidation } from "../validations/user.validation.js";
+
+export const getChartDaysMonthYear = async (req, res) => {
+    try {
+        const { email, year, area } = req.query;
+        const { error: queryError } = userQueryValidation.validate({
+            email
+        });
+
+        if (queryError) {
+            handleErrorClient(
+                res,
+                400,
+                "Error en la validación de los datos",
+                queryError.message,
+            );
+        }
+
+        const [Data, errorData] = await getDaysMonthYearService({ email, year, area });
+
+        if (errorData) return handleErrorClient(res, 404, "Error obteniendo los días", errorData);
+
+        handleSuccess(res, 200, "Detalle de escaneo encontrado", Data);
+    } catch (error) {
+        handleErrorServer(
+            res,
+            500,
+            error.message,
+        );
+    }
+};  
 
 export const getChartDays = async (req, res) => {
     try {

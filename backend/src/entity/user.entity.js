@@ -23,7 +23,6 @@ const UserSchema = new EntitySchema({
     },
     email: {
       type: "varchar",
-      primary: true,
       length: 255,
       nullable: false,
       unique: true,
@@ -66,6 +65,18 @@ const UserSchema = new EntitySchema({
       unique: true,
     },
   ],
+  relations: {
+    workAreas: {
+      target: "WorkArea",
+      type: "one-to-many",
+      inverseSide: "user",
+    },
+    attendances: {
+      target: "Attendance",
+      type: "one-to-many",
+      inverseSide: "user",
+    },
+  },
 });
 
 export default UserSchema;

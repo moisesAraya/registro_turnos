@@ -2,7 +2,7 @@ import axios from './root.service.js';
 
 export async function getScanDays (email, year, area) {
     try {
-        const response = await axios.get(`/charts/days/?email=${email}&year=${year}&area=${area}`);
+        const response = await axios.get(`/charts/days-month-year/?email=${email}&year=${year}&area=${area}`);
         return response.data.data;
     } catch (error) {
         return error.response.data;

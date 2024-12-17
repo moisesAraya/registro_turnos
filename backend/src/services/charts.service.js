@@ -2,6 +2,59 @@
 import { AppDataSource } from "../config/configDb.js";
 import Attendance from "../entity/Attendance.js";
 
+export async function getDaysMonthYearService(query){
+    try {
+        const { email, year, area } = query;
+        const areaId = parseInt(area, 10);
+        
+        const queryBuilder = AppDataSource.getRepository(Attendance)
+            .createQueryBuilder("attendance")
+            .innerJoin("attendance.user", "user")
+            .innerJoin("user.workAreas", "workArea")
+            .select("DATE_TRUNC('month', attendance.timestamp)", "month")
+            .addSelect("COUNT(*)", "count")
+            .where("user.email = :email", { email })
+            .andWhere("DATE_PART('year', attendance.timestamp) = :year", { year })
+            .andWhere("DATE(attendance.timestamp) = workArea.shift_date");
+
+        if (areaId !== 0) {
+            queryBuilder.andWhere("workArea.work_area_id = :area", { area });
+        }
+
+        const Data = await queryBuilder
+            .groupBy("month")
+            .orderBy("month", "ASC")
+            .getRawMany();
+
+        const monthData = Array(12).fill(0);
+
+        Data.forEach((date) => {
+            const monthIndex = new Date(date.month).getUTCMonth();
+            monthData[monthIndex] = parseInt(date.count, 10);
+        });
+
+        const chartData = {
+            labels: [
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
+                "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+            ],
+            datasets: [
+                {
+                    label: "Días trabajados",
+                    data: monthData,
+                },
+            ],
+        };
+
+        return [chartData, null];
+        
+    } catch (error) {
+        console.error("Error al obtener los datos de asistencia:", error);
+        return [null, "Error interno del servidor"];
+    }
+}
+
+
 export async function getAttendanceDaysService(query) {
     try {
         const { email, year, area } = query;

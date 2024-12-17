@@ -14,3 +14,5 @@ export const Area = new EntitySchema({
         },
     }
 })
+
+export default Area;
