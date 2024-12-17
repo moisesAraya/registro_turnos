@@ -2,7 +2,7 @@ import axios from './root.service.js';
 
 export async function getScanDays (email, year, area) {
     try {
-        const response = await axios.get(`/charts/days-month-year/?email=${email}&year=${year}&area=${area}`);
+        const response = await axios.get(`/charts/days-year/?email=${email}&year=${year}&area=${area}`);
         return response.data.data;
     } catch (error) {
         return error.response.data;
@@ -11,7 +11,7 @@ export async function getScanDays (email, year, area) {
 
 export async function getScanHours (email, year, area) {
     try {
-        const response = await axios.get(`/charts/hours/?email=${email}&year=${year}&area=${area}`);
+        const response = await axios.get(`/charts/hours-year/?email=${email}&year=${year}&area=${area}`);
         return response.data.data;
     } catch (error) {
         console.error("Error: ", error);
@@ -20,7 +20,7 @@ export async function getScanHours (email, year, area) {
 
 export async function getScanExtraHours (email, year, area) {
     try {
-        const response = await axios.get(`/charts/extra-hours/?email=${email}&year=${year}&area=${area}`);
+        const response = await axios.get(`/charts/extra-hours-year/?email=${email}&year=${year}&area=${area}`);
         return response.data.data;
     } catch (error) {
         console.error("Error: ", error);

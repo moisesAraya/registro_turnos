@@ -12,6 +12,13 @@ const Shift = new EntitySchema({
     startedBy: { type: "int", nullable: false }, 
     endedBy: { type: "int", nullable: true },  
   },
+  relations: {
+    attendance: {
+      target: "Attendance",
+      type: "one-to-many",
+      inverseSide: "shift",
+    },
+  }
 });
 
 export default Shift;

@@ -1,7 +1,11 @@
 import { Router } from "express";
-import { getChartDaysMonthYear } from "../controllers/charts.controller.js";
 import { authenticateJwt } from "../middlewares/authentication.middleware.js";
 import { isAdminOrUser } from "../middlewares/authorization.middleware.js";
+import { 
+    getChartDaysYear,
+    getChartExtraHoursYear,
+    getChartHoursYear
+} from "../controllers/charts.controller.js";
 
 const router = Router();
 
@@ -9,8 +13,8 @@ router
     .use(authenticateJwt)
     .use(isAdminOrUser);
 
-router.get("/days-month-year", getChartDaysMonthYear);
-// router.get("/hours", getChartHours);
-// router.get("/details", getChartDetails);
+router.get("/days-year", getChartDaysYear);
+router.get("/hours-year", getChartHoursYear);
+router.get("/extra-hours-year", getChartExtraHoursYear);
 
 export default router;

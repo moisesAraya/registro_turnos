@@ -13,6 +13,10 @@ const Attendance = new EntitySchema({
       type: "timestamp",
       createDate: true,
     },
+    endTimestamp: {
+      type: "timestamp",
+      nullable: true, // Permitir valores NULL temporalmente
+    },
     latitude: {
       type: "double precision",
       nullable: true, // Permitir valores NULL temporalmente
@@ -25,6 +29,10 @@ const Attendance = new EntitySchema({
       type: "int",
       nullable: true, // Permitir valores NULL temporalmente
     },
+    shiftId: {
+      type: "int",
+      nullable: true, // Permitir valores NULL temporalmente
+    },
   },
   relations: {
     user: {
@@ -32,6 +40,14 @@ const Attendance = new EntitySchema({
       type: "many-to-one",
       joinColumn: {
         name: "userId",
+        referencedColumnName: "id",
+      },
+    },
+    shift: {
+      target: "Shift",
+      type: "many-to-one",
+      joinColumn: {
+        name: "shiftId",
         referencedColumnName: "id",
       },
     },

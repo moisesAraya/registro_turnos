@@ -2,7 +2,7 @@
 import { AppDataSource } from "../config/configDb.js";
 import Attendance from "../entity/Attendance.js";
 
-export async function getDaysMonthYearService(query){
+export async function getDaysYearService(query){
     try {
         const { email, year, area } = query;
         const areaId = parseInt(area, 10);
@@ -53,6 +53,129 @@ export async function getDaysMonthYearService(query){
         return [null, "Error interno del servidor"];
     }
 }
+
+export async function getHoursYearService(query){
+    try {
+        const { email, year, area } = query;
+        const areaId = parseInt(area, 10);
+
+        const queryBuilder = AppDataSource.getRepository(Attendance)
+            .createQueryBuilder("attendance")
+            .innerJoin("attendance.user", "user")
+            .innerJoin("user.workAreas", "workArea")
+            .select("DATE_TRUNC('month', attendance.timestamp)", "month")
+            .addSelect("SUM(EXTRACT(EPOCH FROM(attendance.endTimestamp - attendance.timestamp)) / 3600)", "totalHours")
+            .where("user.email = :email", { email })
+            .andWhere("DATE_PART('year', attendance.timestamp) = :year", { year })
+            .andWhere("attendance.endTimestamp IS NOT NULL")
+            .andWhere("DATE(attendance.timestamp) = workArea.shift_date")
+            .andWhere("attendance.endTimestamp > attendance.timestamp");
+
+        if (areaId !== 0) {
+            queryBuilder.andWhere("workArea.work_area_id = :area", { area });
+        }
+
+        const Data = await queryBuilder
+            .groupBy("month")
+            .orderBy("month", "ASC")
+            .getRawMany();
+
+        const hourData = Array(12).fill(0);
+
+        Data.forEach((date) => {
+            const monthIndex = new Date(date.month).getUTCMonth();
+            hourData[monthIndex] = parseFloat(date.totalHours);
+        });
+
+        const chartData = {
+            labels: [
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
+                "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+            ],
+            datasets: [
+                {
+                    label: "Horas trabajadas",
+                    data: hourData,
+                },
+            ],
+        };
+
+        return [chartData, null];
+    } catch (error) {
+        console.error("Error al obtener las horas trabajadas:", error);
+        return [null, "Error interno del servidor"];
+        
+    }
+}
+
+export async function getExtraHoursYearService(query){
+    try {
+        const { email, year, area } = query;
+        const areaId = parseInt(area, 10);
+
+        const queryBuilder = AppDataSource.getRepository(Attendance)
+            .createQueryBuilder("attendance")
+            .innerJoin("attendance.user", "user")
+            .innerJoin("attendance.shift", "shift")
+            .innerJoin("user.workAreas", "workArea")
+            .select("DATE_TRUNC('month', attendance.timestamp)", "month")
+            .addSelect(`
+                COALESCE(
+                    SUM(
+                        EXTRACT(
+                            EPOCH FROM (
+                                attendance."endTimestamp" - (DATE(attendance."timestamp") + shift."endTime"::interval)
+                            )
+                        ) / 3600
+                    ), 0
+                ) AS "totalHours"
+            `)
+            .where("user.email = :email", { email })
+            .andWhere("DATE_PART('year', attendance.timestamp) = :year", { year })
+            .andWhere("DATE(attendance.timestamp) = shift.startDate")
+            .andWhere("attendance.\"endTimestamp\" IS NOT NULL")
+            .andWhere("DATE(attendance.timestamp) = workArea.shift_date")
+            .andWhere("attendance.\"endTimestamp\"::time > shift.\"endTime\"");
+
+        if (areaId !== 0) {
+            queryBuilder.andWhere("workArea.work_area_id = :area", { area });
+        }
+
+        const Data = await queryBuilder
+            .groupBy("month")
+            .orderBy("month", "ASC")
+            .getRawMany();
+
+        const extraHoursData = Array(12).fill(0);
+
+        Data.forEach((date) => {
+            const monthIndex = new Date(date.month).getUTCMonth();
+            extraHoursData[monthIndex] = parseFloat(date.extraHours);
+        });
+
+        const chartData = {
+            labels: [
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
+                "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+            ],
+            datasets: [
+                {
+                    label: "Horas extra trabajadas",
+                    data: extraHoursData,
+                },
+            ],
+        };
+
+        return [chartData, null];
+    } catch (error) {
+        console.error("Error al obtener las horas extra trabajadas:", error);
+        return [null, "Error interno del servidor"];
+    }
+};
+
+
+
+
 
 
 export async function getAttendanceDaysService(query) {
