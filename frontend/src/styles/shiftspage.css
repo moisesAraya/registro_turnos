@@ -1,0 +1,89 @@
+/* Contenedor principal */
+.shifts-container {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fdf7f4;
+  border-radius: 10px;
+  padding: 2rem;
+  width: 60%;
+  margin: 2rem auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Título */
+.shifts-title {
+  color: #5a2e0e;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+/* Estado del turno */
+.shift-status {
+  background-color: #fbeae6;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a85533;
+  font-size: 1.2rem;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.shift-status-icon {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Botones */
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.shift-button {
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Botón Start */
+.shift-button.start {
+  background-color: #a0522d;
+  color: #ffffff;
+}
+
+.shift-button.start:hover {
+  background-color: #8b4513;
+  transform: scale(1.05);
+}
+
+/* Botón End */
+.shift-button.end {
+  background-color: #d8a97c;
+  color: #ffffff;
+}
+
+.shift-button.end:hover {
+  background-color: #c78d56;
+  transform: scale(1.05);
+}
+
+/* Botón deshabilitado */
+.shift-button.disabled {
+  background-color: #e0d6d0;
+  color: #6e6e6e;
+  cursor: not-allowed;
+  transform: none;
+}
