@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useUsers from "../hooks/users/useGetUsers";
+import useAreas from "../hooks/areas/useGetAreas";
 import HourLineChart from "../components/HourLineChartComponent";
 import ExtraHourLineChart from "../components/ExtraHourLineChartComponent";
 import PolarAreaChart from "../components/PolarAreaChartComponent";
@@ -20,15 +21,7 @@ const Charts = () => {
     const { users } = useUsers();
 
     const [selectedArea, setSelectedArea] = useState(0);
-    const [areas] = useState([
-        { id: 0, work_area: 'Todas las áreas' },
-        { id: 1, work_area: 'Maestro Cocina' },
-        { id: 2, work_area: 'Ayudante' },
-        { id: 3, work_area: 'Mesero' },
-        { id: 4, work_area: 'Cajero y/o Anfitrión' },
-        { id: 5, work_area: 'Aseo' },
-        { id: 6, work_area: 'Bartender' },
-    ]);
+    const { areas } = useAreas(); 
 
     const handleUserChange = (e) => {
         const selectedRut = e.target.value;
@@ -95,7 +88,7 @@ const Charts = () => {
             >
                 {areas.map((area) => (
                     <option key={area.id} value={area.id}>
-                        {area.work_area}
+                        {area.name}
                     </option>
                 ))}
             </select>

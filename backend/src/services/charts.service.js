@@ -1,6 +1,23 @@
 "use strict";
 import { AppDataSource } from "../config/configDb.js";
 import Attendance from "../entity/Attendance.js";
+import Area from "../entity/area.js";
+
+export async function getAreasService() {
+    try {
+        const areasRepository = AppDataSource.getRepository(Area)
+        
+        const areas = await areasRepository.find();
+
+        if (!areas || areas.length === 0) return [null, "No hay áreas"];
+
+        return [areas, null];
+    } catch (error) {
+        console.error("Error al obtener las áreas:", error);
+        return [null, "Error interno del servidor"];
+        
+    }
+};
 
 export async function getDaysYearService(query){
     try {

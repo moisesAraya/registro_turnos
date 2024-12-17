@@ -4,6 +4,7 @@ import {
     handleSuccess } from "../handlers/responseHandlers.js";
     import { userQueryValidation } from "../validations/user.validation.js";
     import { 
+        getAreasService,
         getDaysYearService,
         getExtraHoursMonthService,
         getExtraHoursYearService,
@@ -12,6 +13,21 @@ import {
         getMonthDataService,
     } from "../services/charts.service.js";
 
+export const getAreas = async (req, res) => {
+    try {
+        const [areas, error] = await getAreasService();
+
+        if (error) return handleErrorClient(res, 404, "Error obteniendo las áreas", error);
+
+        handleSuccess(res, 200, "Áreas obtenidas exitosamente", areas);
+    } catch (error) {
+        return handleErrorServer(
+            res,
+            500,
+            error.message,
+        );
+    }
+};
 
 export const getChartDaysYear = async (req, res) => {
     try {
@@ -190,6 +206,11 @@ export const getChartExtraHoursMonth = async (req, res) => {
         );
     }
 };
+
+
+
+
+
 
 export const getChartDays = async (req, res) => {
     try {

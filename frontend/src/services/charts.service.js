@@ -53,3 +53,12 @@ export async function getExtraHoursMonthData (email, area, year, month) {
         console.error("Error: ", error);
     }
 }
+
+export async function getAreas () {
+    try {
+        const response = await axios.get('/charts/areas');
+        return response.data.data;
+    } catch (error) {
+        console.error("Error: ", error);
+    }
+}

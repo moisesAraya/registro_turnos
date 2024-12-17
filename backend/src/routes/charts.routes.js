@@ -2,6 +2,7 @@ import { Router } from "express";
 import { authenticateJwt } from "../middlewares/authentication.middleware.js";
 import { isAdminOrUser } from "../middlewares/authorization.middleware.js";
 import { 
+    getAreas,
     getChartDaysYear,
     getChartExtraHoursMonth,
     getChartExtraHoursYear,
@@ -22,5 +23,6 @@ router.get("/extra-hours-year", getChartExtraHoursYear);
 router.get("/months", getChartMonth);
 router.get("/hours-month", getChartHoursMonth);
 router.get("/extra-hours-month", getChartExtraHoursMonth);
+router.get("/areas", getAreas)
 
 export default router;

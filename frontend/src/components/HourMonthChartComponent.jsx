@@ -102,7 +102,7 @@ const HourMonthChart = ({ email, area, year, month }) => {
                 <p>Cargando la data...</p>
             ) : hours ? (
                 <>
-                    <div style={{ width: '90%', height: '480px', margin: '0 auto', marginBottom: '40px' }}>
+                    <div style={{ width: '90%', height: '480px', margin: '0 auto', marginBottom: '10px' }}>
                         <h4 style={{ textAlign: 'left', marginLeft: '40px'}}>
                             Total de horas trabajadas el {year}: {totalHours}
                         </h4>
