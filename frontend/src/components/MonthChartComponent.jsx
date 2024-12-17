@@ -18,12 +18,10 @@ ChartJS.register(
     Legend
 )
 
-const MonthChart = ({ area, year, month }) => {
+const MonthChart = ({ email, area, year, month }) => {
     const [scans, setScans] = useState([]);
     const [days, setDays] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
-    const userData = JSON.parse(sessionStorage.getItem('usuario')) || '';
-    const email = userData.email;
 
     const fetchScans = async () => {
         try {
@@ -55,7 +53,7 @@ const MonthChart = ({ area, year, month }) => {
 
     useEffect(() => {
         fetchScans();
-    }, [area, year, month]);
+    }, [area, year, month, email]);
 
     const monthName = [
         "",

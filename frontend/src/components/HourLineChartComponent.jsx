@@ -20,12 +20,10 @@ ChartJS.register(
     Legend
 )
 
-export const HourLineChart = ({ year, area }) => {
+export const HourLineChart = ({ email, year, area }) => {
     const [scans, setScans] = useState([]);
     const [hours, setHours] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
-    const userData = JSON.parse(sessionStorage.getItem('usuario')) || '';
-    const email = userData.email;
 
     const fetchScans = async () => {
         try {
@@ -56,7 +54,7 @@ export const HourLineChart = ({ year, area }) => {
 
     useEffect(() => {
         fetchScans();
-    }, [year, area]);
+    }, [year, area, email]);
 
     const options = {
         responsive: true,

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useUsers from "../hooks/users/useGetUsers";
 import MonthChart from "../components/MonthChartComponent";
 import HourMonthChart from "../components/HourMonthChartComponent";
 import ExtraHourMonthChart from "../components/ExtraHourMonthChartComponent";
@@ -8,7 +9,11 @@ const DetailCharts = () => {
     const navigate = useNavigate();
     const userData = JSON.parse(sessionStorage.getItem('usuario')) || '';
     const nombre = userData.nombreCompleto;
-    const rut = userData.rut;
+    const rol = userData.rol;
+    const emailUsuario = userData.email;
+
+    const [selectedUser, setSelectedUser] = useState({ rut: '', nombre: '' });
+    const { users } = useUsers();
 
     const currentYear = new Date().getFullYear();
     const [year, setYear] = useState(currentYear);
@@ -44,17 +49,62 @@ const DetailCharts = () => {
         { id: 10, month: 'Octubre' },
         { id: 11, month: 'Noviembre' },
         { id: 12, month: 'Diciembre' },
-        
     ];
+
+    const handleUserChange = (e) => {
+        const selectedRut = e.target.value;
+        const user = users.find(user => user.rut === selectedRut) || { rut: '', nombre: '' };
+        setSelectedUser({ rut: user.rut, email: user.email });
+    };
+
     const handleMonthChange = (e) => {
         setSelectedMonth(parseInt(e.target.value, 10));
     };
 
     const selectedMonthName = months.find((month) => month.id === selectedMonth)?.month || "";
 
+    const emailCharts = rol === "administrador" && selectedUser.email ? selectedUser.email : emailUsuario;
+
+    const titulo = () => (
+        <div>
+            {rol === "administrador" && (
+                <h1>
+                    Resumen mensual de trabajadores
+                </h1>
+            )}
+            {rol === "usuario" && (
+                <h1>
+                    Resumen mensual de {nombre}
+                </h1>
+            )}
+        </div>
+    );
+
     const renderFilters = () => (
         <div style={{ textAlign: 'center', marginBottom: '10px', marginLeft: '0px'}}>
             <h3>Filtros:</h3>
+
+            <div>
+                {rol === "administrador" && (
+                    <>
+                        <label htmlFor="user">Trabajador:</label>
+                        <select 
+                            id="user"
+                            value={selectedUser.rut}
+                            onChange={handleUserChange}
+                            style={{ marginLeft: '10px', cursor: 'pointer', marginBottom: '25px' }}
+                        >
+                            <option value="">Seleccionar usuario</option>
+                                {users.map(user => (
+                                    <option key={user.rut} value={user.rut}>
+                                        {user.nombreCompleto}
+                                    </option>
+                                ))}
+                        </select>
+                    </>
+                )}
+            </div>
+
             <label htmlFor="area" style={{ marginLeft: '0px' }}>Área de trabajo: </label>
             <select
                 id="area"
@@ -115,14 +165,13 @@ const DetailCharts = () => {
                             color: 'white',
                             border: 'none',
                             borderRadius: '10px',
+                            boxShadow: '0 2px 4px 0 rgba(0,0,0,0.2)',
                             cursor: 'pointer'
                         }}>
                         Retroceder
                     </button>
                 </div>
-            
-                <h1>Detalles por mes para {nombre}</h1>
-                <h1>RUT: {rut}</h1>
+                {titulo()}
             </div>
 
             <div className="chart-block">
@@ -132,7 +181,7 @@ const DetailCharts = () => {
                 </div>
                 <div className="chart-block">
                     <h2>{nameArea}</h2>
-                    <MonthChart area={selectedArea} year={year} month={selectedMonth} style={{ marginTop: '50px'}}/>
+                    <MonthChart email={emailCharts} area={selectedArea} year={year} month={selectedMonth} style={{ marginTop: '50px'}}/>
                 </div>
             </div>
 
@@ -143,7 +192,7 @@ const DetailCharts = () => {
                 </div>
                 <div className="chart-block">
                     <h2>{nameArea}</h2>
-                    <HourMonthChart area={selectedArea} year={year} month={selectedMonth} style={{ marginTop: '50px'}}/>
+                    <HourMonthChart email={emailCharts} area={selectedArea} year={year} month={selectedMonth} style={{ marginTop: '50px'}}/>
                 </div>
             </div>
 
@@ -154,7 +203,7 @@ const DetailCharts = () => {
                 </div>
                 <div className="chart-block">
                     <h2>{nameArea}</h2>
-                    <ExtraHourMonthChart area={selectedArea} year={year} month={selectedMonth} style={{ marginTop: '50px'}}/>
+                    <ExtraHourMonthChart email={emailCharts} area={selectedArea} year={year} month={selectedMonth} style={{ marginTop: '50px'}}/>
                 </div>
             </div>
         </div>

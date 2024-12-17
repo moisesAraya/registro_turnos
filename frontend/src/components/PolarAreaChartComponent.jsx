@@ -14,12 +14,10 @@ ChartJS.register(
     Legend
 );
 
-const PolarAreaChart = ({ year, area }) => {
+const PolarAreaChart = ({ email, year, area }) => {
     const [scans, setScans] = useState([]);
     const [days, setDays] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
-    const userData = JSON.parse(sessionStorage.getItem('usuario')) || '';
-    const email = userData.email;
 
     const fetchScans = async () => {
         try {
@@ -63,7 +61,7 @@ const PolarAreaChart = ({ year, area }) => {
 
     useEffect(() => {
         fetchScans();
-    }, [area, year]);
+    }, [area, year, email]);
 
     const options = {
         plugins: {

@@ -20,12 +20,10 @@ ChartJS.register(
     Legend
 )
 
-const HourMonthChart = ({ area, year, month }) => {
+const HourMonthChart = ({ email, area, year, month }) => {
     const [hours, setHours] = useState([]);
     const [totalHours, setTotalHours] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
-    const userData = JSON.parse(sessionStorage.getItem('usuario')) || '';
-    const email = userData.email;
 
     const fetchHours = async () => {
         try {
@@ -56,7 +54,7 @@ const HourMonthChart = ({ area, year, month }) => {
 
     useEffect(() => {
         fetchHours();
-    }, [area, year, month]);
+    }, [area, year, month, email]);
 
     const monthName = [
         "",

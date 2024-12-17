@@ -5,8 +5,11 @@ import {
     import { userQueryValidation } from "../validations/user.validation.js";
     import { 
         getDaysYearService,
+        getExtraHoursMonthService,
         getExtraHoursYearService,
-        getHoursYearService, 
+        getHoursMonthService,
+        getHoursYearService,
+        getMonthDataService,
     } from "../services/charts.service.js";
 
 
@@ -18,7 +21,7 @@ export const getChartDaysYear = async (req, res) => {
         });
 
         if (queryError) {
-            handleErrorClient(
+            return handleErrorClient(
                 res,
                 400,
                 "Error en la validación de los datos",
@@ -32,7 +35,7 @@ export const getChartDaysYear = async (req, res) => {
 
         handleSuccess(res, 200, "Detalle de escaneo encontrado", Data);
     } catch (error) {
-        handleErrorServer(
+        return handleErrorServer(
             res,
             500,
             error.message,
@@ -98,11 +101,95 @@ export const getChartExtraHoursYear = async (req, res) => {
     }
 };
 
+export const getChartMonth = async (req, res) => {
+    try {
+        const { email, year, area, month } = req.query;
+        const { error: queryError } = userQueryValidation.validate({
+            email
+        });
 
+        if (queryError) {
+            return handleErrorClient(
+                res,
+                400,
+                "Error en la validación de los datos",
+                queryError.message,
+            );
+        }
 
+        const [Data, errorData] = await getMonthDataService({ email, year, area, month });
 
+        if (errorData) return handleErrorClient(res, 404, "Error obteniendo los datos", errorData);
 
+        handleSuccess(res, 200, "Detalle de escaneo encontrado", Data);
+    } catch (error) {
+        handleErrorServer(
+            res,
+            500,
+            error.message,
+        );
+    }
+};
 
+export const getChartHoursMonth = async (req, res) => {
+    try {
+        const { email, year, area, month } = req.query;
+        const { error: queryError } = userQueryValidation.validate({
+            email
+        });
+
+        if (queryError) {
+            return handleErrorClient(
+                res,
+                400,
+                "Error en la validación de los datos",
+                queryError.message,
+            );
+        };
+
+        const [Data, errorData] = await getHoursMonthService({ email, year, area, month });
+
+        if (errorData) return handleErrorClient(res, 404, "Error obteniendo los datos", errorData);
+
+        handleSuccess(res, 200, "Detalle de escaneo encontrado", Data);
+    } catch (error) {
+        handleErrorServer(
+            res,
+            500,
+            error.message,
+        );
+    }
+};
+
+export const getChartExtraHoursMonth = async (req, res) => {
+    try {
+        const { email, year, area, month } = req.query;
+        const { error: queryError } = userQueryValidation.validate({
+            email
+        });
+
+        if (queryError) {
+            return handleErrorClient(
+                res,
+                400,
+                "Error en la validación de los datos",
+                queryError.message,
+            );
+        };
+
+        const [Data, errorData] = await getExtraHoursMonthService({ email, year, area, month });
+
+        if (errorData) return handleErrorClient(res, 404, "Error obteniendo los datos", errorData);
+
+        handleSuccess(res, 200, "Detalle de escaneo encontrado", Data);
+    } catch (error) {
+        handleErrorServer(
+            res,
+            500,
+            error.message,
+        );
+    }
+};
 
 export const getChartDays = async (req, res) => {
     try {
