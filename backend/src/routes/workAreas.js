@@ -9,7 +9,6 @@ import {
 
 const router = express.Router();
 
-// Rutas para las areas de trabajo
 router.get("/", handleGetAllWorkAreas); 
 router.get("/:worker_id", handleGetWorkAreasByWorkerId); 
 router.post("/", handleCreateWorkArea); 

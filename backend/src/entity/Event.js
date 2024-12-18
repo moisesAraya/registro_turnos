@@ -16,7 +16,7 @@ const Event = new EntitySchema({
     },
     createdBy: {
       type: "int",
-      nullable: true, // Temporalmente permitir valores NULL
+      nullable: true, 
     },
     shift: {
       type: "varchar",
@@ -33,8 +33,7 @@ const Event = new EntitySchema({
       target: "User",
       type: "many-to-one",
       joinColumn: {
-        name: "createdBy", // Columna en la tabla events
-        referencedColumnName: "id", // Columna referenciada en la tabla users
+        referencedColumnName: "id", 
       },
     },
   },

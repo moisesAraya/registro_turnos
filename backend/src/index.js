@@ -11,30 +11,28 @@ import { createUsers } from "./config/initialSetup.js";
 import { passportJwtSetup } from "./auth/passport.auth.js";
 
 // Importación de rutas
-import indexRoutes from "./routes/index.routes.js"; // Rutas principales
+import indexRoutes from "./routes/index.routes.js";
 import workAreasRouter from "./routes/workAreas.js";
 import chartsRoutes from "./routes/charts.routes.js";
-import shiftRoutes from "./routes/shifts.routes.js"; // Ruta para Turnos
-import attendanceRoutes from "./routes/attendance.routes.js"; // Ruta para Asistencia
-import areasRouter from "./routes/areas.routes.js";
-
+import shiftRoutes from "./routes/shifts.routes.js";
+import attendanceRoutes from "./routes/attendance.routes.js";
+import areaRoutes from "./routes/areas.routes.js";
+import dashboardRoutes from "./routes/dashboard.routes.js"; // Importación del dashboard
+import earlyExitRoutes from "./routes/earlyexit.routes.js"; // Importación de earlyexit
 
 async function setupServer() {
   try {
     const app = express();
 
-    // Deshabilitar cabecera "X-Powered-By" para seguridad
     app.disable("x-powered-by");
 
-    // Configuración de CORS
     app.use(
       cors({
         credentials: true,
-        origin: true, // Ajustar para producción con una lista de dominios permitidos
+        origin: true,
       })
     );
 
-    // Middlewares generales
     app.use(
       urlencoded({
         extended: true,
@@ -49,39 +47,34 @@ async function setupServer() {
     );
 
     app.use(cookieParser());
-    app.use(morgan("dev")); // Logger de solicitudes
+    app.use(morgan("dev"));
 
-    // Configuración de sesión
     app.use(
       session({
         secret: cookieKey,
         resave: false,
         saveUninitialized: false,
         cookie: {
-          secure: false, // Cambiar a true si usas HTTPS
+          secure: false,
           httpOnly: true,
           sameSite: "strict",
         },
       })
     );
 
-    // Inicialización de Passport
     app.use(passport.initialize());
     app.use(passport.session());
-    app.use("/api/areas", areasRouter);
-
-
-    // Configuración de estrategias de Passport
     passportJwtSetup();
 
-    // Configuración de rutas
-    app.use("/api", indexRoutes); // Ruta base del API
-    app.use("/api/work_areas", workAreasRouter); // Ruta para Áreas de Trabajo
-    app.use("/api/charts", chartsRoutes); // Ruta para gráficos
-    app.use("/api/shifts", shiftRoutes); // Ruta para Turnos
-    app.use("/api/attendance", attendanceRoutes); // Ruta para Asistencia
+    app.use("/api", indexRoutes);
+    app.use("/api/work_areas", workAreasRouter);
+    app.use("/api/charts", chartsRoutes);
+    app.use("/api/shifts", shiftRoutes);
+    app.use("/api/attendance", attendanceRoutes);
+    app.use("/api/areas", areaRoutes);
+    app.use("/api/dashboard", dashboardRoutes); // Registro de rutas del dashboard
+    app.use("/api/earlyexit", earlyExitRoutes); // Registro de rutas de earlyexit
 
-    // Inicio del servidor
     app.listen(PORT, () => {
       console.log(`=> Servidor corriendo en ${HOST}:${PORT}/api`);
     });
@@ -93,15 +86,14 @@ async function setupServer() {
 
 async function setupAPI() {
   try {
-    await connectDB(); // Conexión a la base de datos
-    await setupServer(); // Configuración del servidor
-    await createUsers(); // Creación de usuarios iniciales
+    await connectDB();
+    await setupServer();
+    await createUsers();
   } catch (error) {
     console.error("Error en setupAPI:", error.message);
   }
 }
 
-// Iniciar la API
 setupAPI()
   .then(() => console.log("=> API Iniciada exitosamente"))
   .catch((error) => console.error("Error al iniciar la API:", error.message));
