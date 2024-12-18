@@ -1,4 +1,3 @@
-// src/services/shift.service.js
 import { AppDataSource } from "../config/configDb.js";
 import Shift from "../entity/Shift.js";
 
@@ -6,70 +5,80 @@ import Shift from "../entity/Shift.js";
 export const startShiftService = async (user) => {
   try {
     const shiftRepository = AppDataSource.getRepository(Shift);
+
+    // Verificar si ya hay un turno activo
+    const activeShift = await shiftRepository.query(`
+      SELECT * FROM shifts WHERE "endDate" IS NULL LIMIT 1
+    `);
+
+    if (activeShift.length > 0) {
+      return [null, "Ya existe un turno activo."];
+    }
+
+    // Crear un nuevo turno
     const newShift = shiftRepository.create({
       startDate: new Date(),
-      startTime: new Date().toTimeString().split(" ")[0], // Hora actual
+      startTime: new Date(),
       startedBy: user.id,
     });
 
-    const shift = await shiftRepository.save(newShift);
-    return [shift, null];
+    await shiftRepository.save(newShift);
+    return [newShift, null];
   } catch (error) {
     console.error("Error al iniciar turno:", error.message);
-    return [null, "Error al iniciar turno"];
+    return [null, "Error interno al iniciar el turno."];
   }
 };
 
-// Servicio para terminar un turno
+// Servicio para finalizar un turno
 export const endShiftService = async (user) => {
   try {
     const shiftRepository = AppDataSource.getRepository(Shift);
 
-    // Buscar el turno activo del usuario (sin hora de finalización)
-    const activeShift = await shiftRepository.findOne({
-      where: {
-        startedBy: user.id,
-        endTime: null,
-        endDate: null,
-      },
-    });
+    // Buscar turno activo directamente con SQL
+    const activeShift = await shiftRepository.query(`
+      SELECT * FROM shifts WHERE "endDate" IS NULL LIMIT 1
+    `);
 
-    if (!activeShift) {
-      return [null, "No hay un turno activo para terminar"];
+    if (activeShift.length === 0) {
+      return [null, "No hay un turno activo para finalizar."];
     }
 
-    // Actualizar el turno con la hora de finalización
-    activeShift.endTime = new Date().toTimeString().split(" ")[0];
-    activeShift.endDate = new Date();
+    // Actualizar el turno activo
+    const updatedShift = await shiftRepository.query(`
+      UPDATE shifts
+      SET "endDate" = NOW(), "endTime" = NOW(), "endedBy" = $1
+      WHERE id = $2
+      RETURNING *;
+    `, [user.id, activeShift[0].id]);
 
-    const updatedShift = await shiftRepository.save(activeShift);
-    return [updatedShift, null];
+    console.log("Turno finalizado correctamente:", updatedShift);
+    return [updatedShift[0], null];
   } catch (error) {
-    console.error("Error al terminar turno:", error.message);
-    return [null, "Error al terminar turno"];
+    console.error("Error al finalizar turno:", error.message);
+    return [null, "Error interno al finalizar el turno."];
   }
 };
 
-// Servicio para obtener el turno activo del usuario
-export const getActiveShiftForUser = async (user) => {
+// Servicio para obtener turno activo
+export const getActiveShiftService = async () => {
   try {
     const shiftRepository = AppDataSource.getRepository(Shift);
 
-    const activeShift = await shiftRepository.findOne({
-      where: {
-        startedBy: user.id,
-        endTime: null,
-        endDate: null,
-      },
-    });
+    // Buscar turno activo directamente con SQL
+    const activeShift = await shiftRepository.query(`
+      SELECT * FROM shifts WHERE "endDate" IS NULL LIMIT 1
+    `);
 
-    if (!activeShift) {
-      return [null, "No tienes un turno activo."];
+    console.log("Turno activo encontrado:", activeShift);
+
+    if (activeShift.length === 0) {
+      return [null, "No hay un turno activo."];
     }
 
-    return [activeShift, null];
+    return [activeShift[0], null];
   } catch (error) {
-    console.error("Error al obtener el turno activo:", error.message);
-    return [null, "Error al obtener el turno activo"];
+    console.error("Error al obtener turno activo:", error.message);
+    return [null, "Error interno al obtener el turno activo."];
   }
 };
