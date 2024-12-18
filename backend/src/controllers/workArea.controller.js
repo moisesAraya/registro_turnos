@@ -54,8 +54,8 @@ export const handleCreateWorkArea = async (req, res) => {
     const { error } = validateWorkAreaData(req.body);
     if (error) return res.status(400).json({ message: error.details[0].message });
 
-    const { work_area, worker_id } = req.body;
-    const newWorkArea = await createWorkArea(work_area, worker_id);
+    const { work_area_id, worker_id } = req.body;
+    const newWorkArea = await createWorkArea(work_area_id, worker_id);
     res.status(201).json({
       message: "Nueva área de trabajo creada",
       data: newWorkArea,

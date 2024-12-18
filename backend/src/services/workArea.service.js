@@ -14,10 +14,10 @@ export const getWorkAreasByWorkerId = async (worker_id) => {
 };
 
 // Crear nueva área de trabajo
-export const createWorkArea = async (work_area, worker_id) => {
+export const createWorkArea = async (work_area_id, worker_id) => {
   const workAreaRepository = AppDataSource.getRepository(WorkArea);
   const newWorkArea = workAreaRepository.create({
-    work_area,
+    work_area_id,
     worker_id,
     shift_date: new Date(),
   });

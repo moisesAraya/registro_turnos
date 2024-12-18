@@ -9,7 +9,7 @@ export const validateWorkerId = (worker_id) => {
 // Validar datos al crear un área de trabajo
 export const validateWorkAreaData = (data) => {
   const schema = Joi.object({
-    work_area: Joi.string().required(),
+    work_area_id: Joi.number().required(),
     worker_id: Joi.number().integer().positive().required(),
   });
   return schema.validate(data);
