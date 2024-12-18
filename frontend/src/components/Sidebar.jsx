@@ -7,7 +7,9 @@ const Sidebar = () => {
   const user = JSON.parse(sessionStorage.getItem("usuario")); 
   return (
     <nav className="sidebar">
-      <h2 className="sidebar-title">Restaurant Manager</h2>
+      <h2 className="sidebar-title">
+        {user ? user.nombreCompleto : "Restaurant Manager"}
+      </h2>
       <ul className="sidebar-menu">
         <li>
           <NavLink to="/home" className={({ isActive }) => (isActive ? "active" : "")}>
