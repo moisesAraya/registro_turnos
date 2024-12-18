@@ -29,6 +29,7 @@ export const registerAttendance = async (userId, shiftId) => {
   } catch (err) {
     throw new Error(err.response?.data?.message || "Error al registrar la asistencia.");
   }
+<<<<<<< HEAD
 };
 
 // Nueva función para registrar salida temprana
@@ -63,3 +64,6 @@ export const registerEarlyExit = async (userId, shiftId, reason, authorizedBy) =
     throw new Error(err.response?.data?.message || "Error al registrar la salida temprana.");
   }
 };
+=======
+};
+>>>>>>> 4338fc4f48eab1f923eebab5c8ec4a8320773b6a
