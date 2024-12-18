@@ -1,3 +1,4 @@
+// attendance.service.js
 import axios from "axios";
 
 export const registerAttendance = async (userId, shiftId) => {
@@ -12,13 +13,11 @@ export const registerAttendance = async (userId, shiftId) => {
   }
 
   try {
-    console.log("Enviando datos al backend:", { userId, shiftId });
-
     const response = await axios.post(
       `${import.meta.env.VITE_BASE_URL}/attendance/register`,
       {
-        userId,
-        shiftId,
+        user_id: userId,
+        shift_id: shiftId,
       },
       {
         headers: {
@@ -28,7 +27,39 @@ export const registerAttendance = async (userId, shiftId) => {
     );
     return response.data;
   } catch (err) {
-    console.error("Error en la solicitud al backend:", err.response?.data || err);
     throw new Error(err.response?.data?.message || "Error al registrar la asistencia.");
+  }
+};
+
+// Nueva función para registrar salida temprana
+export const registerEarlyExit = async (userId, shiftId, reason, authorizedBy) => {
+  const token = sessionStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No se encontró un token válido en el almacenamiento de sesión.");
+  }
+
+  if (!shiftId || !reason || !authorizedBy) {
+    throw new Error("Todos los campos son obligatorios para registrar una salida temprana.");
+  }
+
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/attendance/early_exit`,
+      {
+        user_id: userId,
+        shift_id: shiftId,
+        reason,
+        authorized_by: authorizedBy,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (err) {
+    throw new Error(err.response?.data?.message || "Error al registrar la salida temprana.");
   }
 };

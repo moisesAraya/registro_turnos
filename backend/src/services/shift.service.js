@@ -1,12 +1,12 @@
 import { AppDataSource } from "../config/configDb.js";
 import Shift from "../entity/Shift.js";
+import Attendance from "../entity/Attendance.js";
 
 // Servicio para iniciar un turno
 export const startShiftService = async (user) => {
   try {
     const shiftRepository = AppDataSource.getRepository(Shift);
 
-    // Verificar si ya hay un turno activo
     const activeShift = await shiftRepository.query(`
       SELECT * FROM shifts WHERE "endDate" IS NULL LIMIT 1
     `);
@@ -15,7 +15,6 @@ export const startShiftService = async (user) => {
       return [null, "Ya existe un turno activo."];
     }
 
-    // Crear un nuevo turno
     const newShift = shiftRepository.create({
       startDate: new Date(),
       startTime: new Date(),
@@ -30,12 +29,12 @@ export const startShiftService = async (user) => {
   }
 };
 
-// Servicio para finalizar un turno
+// Servicio para finalizar un turno y actualizar asistencia
 export const endShiftService = async (user) => {
   try {
     const shiftRepository = AppDataSource.getRepository(Shift);
+    const attendanceRepository = AppDataSource.getRepository(Attendance);
 
-    // Buscar turno activo directamente con SQL
     const activeShift = await shiftRepository.query(`
       SELECT * FROM shifts WHERE "endDate" IS NULL LIMIT 1
     `);
@@ -45,17 +44,30 @@ export const endShiftService = async (user) => {
     }
 
     // Actualizar el turno activo
-    const updatedShift = await shiftRepository.query(`
+    const updatedShift = await shiftRepository.query(
+      `
       UPDATE shifts
       SET "endDate" = NOW(), "endTime" = NOW(), "endedBy" = $1
       WHERE id = $2
       RETURNING *;
-    `, [user.id, activeShift[0].id]);
+    `,
+      [user.id, activeShift[0].id]
+    );
 
-    console.log("Turno finalizado correctamente:", updatedShift);
+    // Actualizar endTimestamp para todos los registros de asistencia vinculados al turno
+    await attendanceRepository.query(
+      `
+      UPDATE attendance
+      SET "endTimestamp" = NOW()
+      WHERE "shiftId" = $1 AND "endTimestamp" IS NULL;
+    `,
+      [activeShift[0].id]
+    );
+
+    console.log("Turno finalizado y asistencia actualizada correctamente:", updatedShift);
     return [updatedShift[0], null];
   } catch (error) {
-    console.error("Error al finalizar turno:", error.message);
+    console.error("Error al finalizar turno y actualizar asistencia:", error.message);
     return [null, "Error interno al finalizar el turno."];
   }
 };
@@ -65,12 +77,9 @@ export const getActiveShiftService = async () => {
   try {
     const shiftRepository = AppDataSource.getRepository(Shift);
 
-    // Buscar turno activo directamente con SQL
     const activeShift = await shiftRepository.query(`
       SELECT * FROM shifts WHERE "endDate" IS NULL LIMIT 1
     `);
-
-    console.log("Turno activo encontrado:", activeShift);
 
     if (activeShift.length === 0) {
       return [null, "No hay un turno activo."];

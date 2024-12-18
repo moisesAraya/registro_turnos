@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
-import "../styles/attendance.css";
-import { registerAttendance, registerEarlyExit } from "../services/attendance.service";
-import AreaSelectionModal from "./AreaSelectionModal";
 import axios from "axios";
+import "../styles/earlyExit.css";
 
-const Attendance = ({ user }) => {
-  const [success, setSuccess] = useState("");
-  const [error, setError] = useState("");
-  const [showAreaModal, setShowAreaModal] = useState(false);
+const EarlyExit = ({ user }) => {
   const [showExitModal, setShowExitModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [exitReason, setExitReason] = useState("");
   const [admins, setAdmins] = useState([]);
   const [selectedAdmin, setSelectedAdmin] = useState("");
-  const [exitReason, setExitReason] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchAdmins = async () => {
@@ -23,49 +20,12 @@ const Attendance = ({ user }) => {
         setAdmins(response.data);
       } catch (err) {
         console.error("Error al obtener lista de administradores:", err);
+        setError("Error al cargar administradores.");
       }
     };
 
     fetchAdmins();
   }, []);
-
-  const handleRegisterAttendance = async () => {
-    setError("");
-    setSuccess("");
-    setIsLoading(true);
-
-    try {
-      const activeShiftString = localStorage.getItem("activeShift");
-      if (!activeShiftString) {
-        setError("No se encontró un turno activo en el almacenamiento local.");
-        setIsLoading(false);
-        return;
-      }
-
-      const activeShift = JSON.parse(activeShiftString);
-      const shift_id = activeShift.shift_id;
-
-      if (!shift_id) {
-        setError("No tienes un turno activo para registrar la asistencia.");
-        setIsLoading(false);
-        return;
-      }
-
-      const response = await registerAttendance(user.id, shift_id);
-
-      if (response.success) {
-        setSuccess("Asistencia registrada exitosamente.");
-        setShowAreaModal(true);
-      } else {
-        setError("Error al registrar la asistencia.");
-      }
-    } catch (err) {
-      console.error("Error al registrar asistencia:", err.message || err);
-      setError(err.message || "Error al registrar la asistencia.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleRegisterEarlyExit = async () => {
     setError("");
@@ -89,9 +49,20 @@ const Attendance = ({ user }) => {
         return;
       }
 
-      const response = await registerEarlyExit(user.id, shift_id, exitReason, selectedAdmin);
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/attendance/early_exit`,
+        {
+          user_id: user.id,
+          shift_id: shift_id,
+          exit_reason: exitReason,
+          authorized_by: selectedAdmin,
+        },
+        {
+          headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
+        }
+      );
 
-      if (response.success) {
+      if (response.data.success) {
         setSuccess("Salida temprana registrada exitosamente.");
         setShowExitModal(false);
       } else {
@@ -99,41 +70,17 @@ const Attendance = ({ user }) => {
       }
     } catch (err) {
       console.error("Error al registrar salida temprana:", err.message || err);
-      setError(err.message || "Error al registrar la salida temprana.");
+      setError(err.response?.data?.message || "Error al registrar la salida temprana.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="attendance-container">
-      <h2>Registro de Asistencia</h2>
-      <button
-        onClick={handleRegisterAttendance}
-        className="attendance-button"
-        disabled={isLoading}
-      >
-        {isLoading ? "Registrando..." : "Registrar Ingreso"}
-      </button>
-
-      <button
-        onClick={() => setShowExitModal(true)}
-        className="exit-button"
-        disabled={isLoading}
-      >
+    <div className="early-exit-container">
+      <button onClick={() => setShowExitModal(true)} className="early-exit-button">
         Registrar salida temprana
       </button>
-
-      {error && <p className="error">{error}</p>}
-      {success && <p className="success">{success}</p>}
-
-      {showAreaModal && (
-        <AreaSelectionModal
-          userId={user.id}
-          onClose={() => setShowAreaModal(false)}
-          onSubmit={() => setShowAreaModal(false)}
-        />
-      )}
 
       {showExitModal && (
         <div className="modal-overlay">
@@ -163,6 +110,8 @@ const Attendance = ({ user }) => {
               </button>
               <button onClick={() => setShowExitModal(false)}>Cancelar</button>
             </div>
+            {error && <p className="error">{error}</p>}
+            {success && <p className="success">{success}</p>}
           </div>
         </div>
       )}
@@ -170,4 +119,4 @@ const Attendance = ({ user }) => {
   );
 };
 
-export default Attendance;
+export default EarlyExit;
