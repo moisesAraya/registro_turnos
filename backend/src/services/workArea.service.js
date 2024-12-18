@@ -25,11 +25,14 @@ export const createWorkArea = async (work_area_id, worker_id) => {
 };
 
 // Actualizar área de trabajo
-export const updateWorkArea = async (id, work_area) => {
+export const updateWorkArea = async (id, { work_area_id, worker_id }) => {
   const workAreaRepository = AppDataSource.getRepository(WorkArea);
   const existingWorkArea = await workAreaRepository.findOneBy({ id });
-  if (!existingWorkArea) throw new Error("Work area not found");
-  existingWorkArea.work_area = work_area;
+  if (!existingWorkArea) throw new Error("Área de trabajo no encontrada");
+
+  // Actualiza solo los campos permitidos
+  existingWorkArea.work_area_id = work_area_id || existingWorkArea.work_area_id;
+  existingWorkArea.worker_id = worker_id || existingWorkArea.worker_id;
   return await workAreaRepository.save(existingWorkArea);
 };
 
@@ -37,6 +40,7 @@ export const updateWorkArea = async (id, work_area) => {
 export const deleteWorkArea = async (id) => {
   const workAreaRepository = AppDataSource.getRepository(WorkArea);
   const existingWorkArea = await workAreaRepository.findOneBy({ id });
-  if (!existingWorkArea) throw new Error("Work area not found");
+  if (!existingWorkArea) throw new Error("Área de trabajo no encontrada");
+
   await workAreaRepository.remove(existingWorkArea);
 };

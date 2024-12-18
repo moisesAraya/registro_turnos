@@ -5,22 +5,22 @@ import {
   updateWorkArea,
   deleteWorkArea,
 } from "../services/workArea.service.js";
+
 import {
   validateWorkerId,
   validateWorkAreaData,
   validateId,
-  validateWorkArea,
 } from "../validations/workArea.validation.js";
 
-// Obtener todas las áreas de trabajo
+// Obtener todos los registros de áreas de trabajo
 export const handleGetAllWorkAreas = async (req, res) => {
   try {
     const workAreas = await getAllWorkAreas();
     if (!workAreas || workAreas.length === 0) {
-      return res.status(404).json({ message: "No se encontraron áreas de trabajo" });
+      return res.status(404).json({ message: "No se encontraron registros áreas de trabajo" });
     }
     res.status(200).json({
-      message: "Áreas de trabajo encontradas",
+      message: "Registro de selección de área de trabajo encontradas",
       data: workAreas,
     });
   } catch (error) {
@@ -48,7 +48,7 @@ export const handleGetWorkAreasByWorkerId = async (req, res) => {
   }
 };
 
-// Crear nueva área de trabajo
+// Registrar área de trabajo
 export const handleCreateWorkArea = async (req, res) => {
   try {
     const { error } = validateWorkAreaData(req.body);
@@ -57,7 +57,7 @@ export const handleCreateWorkArea = async (req, res) => {
     const { work_area_id, worker_id } = req.body;
     const newWorkArea = await createWorkArea(work_area_id, worker_id);
     res.status(201).json({
-      message: "Nueva área de trabajo creada",
+      message: "Área de trabajo registrada exitosamente",
       data: newWorkArea,
     });
   } catch (error) {
@@ -69,19 +69,12 @@ export const handleCreateWorkArea = async (req, res) => {
 export const handleUpdateWorkArea = async (req, res) => {
   try {
     const { id } = req.params;
-    const { work_area } = req.body;
+    const { work_area_id, worker_id } = req.body;
 
     const idError = validateId(id).error;
-    const workAreaError = validateWorkArea(work_area).error;
     if (idError) return res.status(400).json({ message: idError.details[0].message });
-    if (workAreaError) return res.status(400).json({ message: workAreaError.details[0].message });
 
-    const existingWorkArea = await getAllWorkAreas(id); // Cambia a tu servicio real
-    if (!existingWorkArea) {
-      return res.status(404).json({ message: "Área de trabajo no encontrada" });
-    }
-
-    const updatedWorkArea = await updateWorkArea(id, work_area);
+    const updatedWorkArea = await updateWorkArea(id, { work_area_id, worker_id });
     res.status(200).json({
       message: "Área de trabajo actualizada exitosamente",
       data: updatedWorkArea,
@@ -98,11 +91,6 @@ export const handleDeleteWorkArea = async (req, res) => {
 
     const idError = validateId(id).error;
     if (idError) return res.status(400).json({ message: idError.details[0].message });
-
-    const existingWorkArea = await getAllWorkAreas(id); // Cambia a tu servicio real
-    if (!existingWorkArea) {
-      return res.status(404).json({ message: "Área de trabajo no encontrada" });
-    }
 
     await deleteWorkArea(id);
     res.status(200).json({ message: "Área de trabajo eliminada exitosamente" });

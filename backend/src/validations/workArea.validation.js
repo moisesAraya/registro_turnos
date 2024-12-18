@@ -20,9 +20,3 @@ export const validateId = (id) => {
   const schema = Joi.number().integer().positive().required();
   return schema.validate(id);
 };
-
-// Validar nombre de área de trabajo
-export const validateWorkArea = (work_area) => {
-  const schema = Joi.string().required();
-  return schema.validate(work_area);
-};
