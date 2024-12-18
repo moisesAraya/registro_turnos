@@ -1,5 +1,5 @@
 // src/controllers/shifts.controller.js
-import { endShiftService, startShiftService, getActiveShiftForUser } from "../services/Shift.service.js";
+import { endShiftService, startShiftService, getActiveShiftForUser } from "../services/shift.service.js";
 import { handleErrorServer, handleSuccess } from "../handlers/responseHandlers.js";
 
 // Controlador para iniciar turno

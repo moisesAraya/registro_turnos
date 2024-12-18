@@ -1,6 +1,6 @@
 // src/services/shift.service.js
 import { AppDataSource } from "../config/configDb.js";
-import Shift from "../entity/shift.js";
+import Shift from "../entity/Shift.js";
 
 // Servicio para iniciar un turno
 export const startShiftService = async (user) => {
