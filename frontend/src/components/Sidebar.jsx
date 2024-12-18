@@ -1,11 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaHome, FaUserFriends, FaChartBar, FaCalendarAlt, FaClock, FaSignOutAlt } from "react-icons/fa"; // Importa el icono FaClock
+import { FaHome, FaUserFriends, FaChartBar, FaCalendarAlt, FaClock, FaSignOutAlt } from "react-icons/fa"; 
 import "../styles/sidebar.css";
 
 const Sidebar = () => {
-  const user = JSON.parse(sessionStorage.getItem("usuario")); // Obtener información del usuario
-
+  const user = JSON.parse(sessionStorage.getItem("usuario")); 
   return (
     <nav className="sidebar">
       <h2 className="sidebar-title">Restaurant Manager</h2>

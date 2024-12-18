@@ -1,4 +1,3 @@
-// src/components/Attendance.jsx
 import React, { useState, useEffect } from "react";
 import "../styles/attendance.css";
 import { registerAttendance } from "../services/attendance.service";
@@ -36,58 +35,35 @@ const Attendance = ({ user }) => {
   }, [user.id]);
 
   // Manejo del registro de asistencia
-  const handleRegisterAttendance = () => {
-    if (!navigator.geolocation) {
-      setError("La geolocalización no está soportada en este navegador.");
-      return;
-    }
-
+  const handleRegisterAttendance = async () => {
     setError("");
     setSuccess("");
     setIsLoading(true);
 
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
+    // Verificamos si el shift_id está disponible
+    if (!shiftId) {
+      setError("No tienes un turno activo para registrar la asistencia.");
+      setIsLoading(false);
+      return;
+    }
 
-        // Verificamos si el shift_id está disponible
-        if (!shiftId) {
-          setError("No tienes un turno activo para registrar la asistencia.");
-          setIsLoading(false);
-          return;
-        }
+    try {
+      const response = await registerAttendance(user.id, shiftId);
 
-        try {
-          const response = await registerAttendance(
-            user.id, // ID del usuario
-            latitude,
-            longitude,
-            shiftId // Enviamos el shift_id
-          );
-
-          console.log("Respuesta del servidor:", response);
-
-          if (response && response.success) {
-            setSuccess("Asistencia registrada exitosamente!");
-            setTimeout(() => setSuccess(""), 5000);
-          } else {
-            setError("Respuesta inesperada del servidor.");
-          }
-        } catch (err) {
-          console.error("Error al registrar el ingreso:", err);
-          const errorMessage =
-            err.response?.data?.message || "Error desconocido al registrar.";
-          setError(errorMessage);
-        } finally {
-          setIsLoading(false);
-        }
-      },
-      (error) => {
-        console.error("Error obteniendo geolocalización:", error.message);
-        setError("No se pudo obtener la ubicación.");
-        setIsLoading(false);
+      if (response && response.success) {
+        setSuccess("Asistencia registrada exitosamente!");
+        setTimeout(() => setSuccess(""), 5000);
+      } else {
+        setError("Respuesta inesperada del servidor.");
       }
-    );
+    } catch (err) {
+      console.error("Error al registrar el ingreso:", err);
+      const errorMessage =
+        err.response?.data?.message || "Error desconocido al registrar.";
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
