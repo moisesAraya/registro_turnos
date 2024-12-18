@@ -1,34 +1,54 @@
-.area-selection-page {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
-  
-  .area-selection-page h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .area-selection-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  .area-selection-form label {
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-  
-  .area-selection-form select {
-    width: 200px;
-    padding: 10px;
-    font-size: 16px;
-  }
-  
-  .area-selection-form button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-  }
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: #f8f0e3;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+}
+
+.modal h2 {
+  color: #5a3d2b;
+}
+
+.modal select,
+.modal button {
+  margin: 10px 0;
+  padding: 8px;
+  width: 100%;
+  font-size: 1rem;
+  border: 1px solid #d3b89a;
+  border-radius: 5px;
+}
+
+.modal button {
+  background-color: #8b5e3c;
+  color: #fff;
+  cursor: pointer;
+}
+
+.modal button:hover {
+  background-color: #6f482c;
+}
+
+.modal button[type="button"] {
+  background-color: #d3b89a;
+  color: #5a3d2b;
+}
+
+.modal button[type="button"]:hover {
+  background-color: #b89578;
+}

@@ -10,7 +10,6 @@ import Charts from '@pages/Charts';
 import DetailCharts from '@pages/DetailCharts';
 import Error404 from '@pages/Error404';
 import Root from '@pages/Root';
-import AreaSelection from '@pages/AreaSelection';
 import ProtectedRoute from '@components/ProtectedRoute';
 import '@styles/styles.css';
 
@@ -48,14 +47,7 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      {
-        path: '/area-selection',
-        element: (
-          <ProtectedRoute allowedRoles={['administrador', 'usuario']}>
-            <AreaSelection /> 
-          </ProtectedRoute>
-        ),
-      },
+  
       {
         path: '/charts',
         element: (

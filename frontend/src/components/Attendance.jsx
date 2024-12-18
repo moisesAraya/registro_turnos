@@ -1,84 +1,79 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../styles/attendance.css";
 import { registerAttendance } from "../services/attendance.service";
-import axios from "axios";
+import AreaSelectionModal from "./AreaSelectionModal";
 
 const Attendance = ({ user }) => {
-  const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+  const [showAreaModal, setShowAreaModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [shiftId, setShiftId] = useState(null); // Estado para almacenar el shift_id
 
-  // Función para obtener el turno activo
-  const fetchActiveShift = async () => {
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/shifts/active`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Asegúrate de que el token esté presente
-        },
-      });
-
-      if (response.data && response.data.shift_id) {
-        setShiftId(response.data.shift_id);
-      } else {
-        setError("No tienes un turno activo.");
-      }
-    } catch (err) {
-      console.error("Error al obtener el turno activo:", err);
-      setError("Error al obtener el turno activo.");
-    }
-  };
-
-  // Llamamos a la función fetchActiveShift cuando el componente se monta
-  useEffect(() => {
-    fetchActiveShift();
-  }, [user.id]);
-
-  // Manejo del registro de asistencia
   const handleRegisterAttendance = async () => {
     setError("");
     setSuccess("");
     setIsLoading(true);
 
-    // Verificamos si el shift_id está disponible
-    if (!shiftId) {
-      setError("No tienes un turno activo para registrar la asistencia.");
-      setIsLoading(false);
-      return;
-    }
-
     try {
+      const activeShiftString = localStorage.getItem("activeShift");
+      if (!activeShiftString) {
+        setError("No se encontró un turno activo en el almacenamiento local.");
+        setIsLoading(false);
+        return;
+      }
+
+      const activeShift = JSON.parse(activeShiftString);
+      const shiftId = activeShift.shift_id;
+
+      if (!shiftId) {
+        setError("No tienes un turno activo para registrar la asistencia.");
+        setIsLoading(false);
+        return;
+      }
+
+      console.log("Registrando asistencia con:", { userId: user.id, shiftId });
+
       const response = await registerAttendance(user.id, shiftId);
 
-      if (response && response.success) {
-        setSuccess("Asistencia registrada exitosamente!");
-        setTimeout(() => setSuccess(""), 5000);
+      if (response.success) {
+        setSuccess("Asistencia registrada exitosamente.");
+        setShowAreaModal(true);
       } else {
-        setError("Respuesta inesperada del servidor.");
+        setError("Error al registrar la asistencia.");
       }
     } catch (err) {
-      console.error("Error al registrar el ingreso:", err);
-      const errorMessage =
-        err.response?.data?.message || "Error desconocido al registrar.";
-      setError(errorMessage);
+      console.error("Error al registrar asistencia:", err.message || err);
+      setError(err.message || "Error al registrar la asistencia.");
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleModalClose = () => {
+    setShowAreaModal(false);
+  };
+
   return (
     <div className="attendance-container">
-      <h2 className="attendance-title">Registrar Ingreso</h2>
+      <h2>Registro de Asistencia</h2>
       <button
         onClick={handleRegisterAttendance}
         className="attendance-button"
         disabled={isLoading}
       >
-        {isLoading ? "Registrando..." : "Registrar mi ingreso"}
+        {isLoading ? "Registrando..." : "Registrar Ingreso"}
       </button>
 
-      {error && <p className="attendance-error">{error}</p>}
-      {success && <p className="attendance-success">{success}</p>}
+      {error && <p className="error">{error}</p>}
+      {success && <p className="success">{success}</p>}
+
+      {showAreaModal && (
+        <AreaSelectionModal
+          userId={user.id}
+          onClose={handleModalClose}
+          onSubmit={handleModalClose}
+        />
+      )}
     </div>
   );
 };

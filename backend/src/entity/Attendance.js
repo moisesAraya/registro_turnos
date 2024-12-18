@@ -17,14 +17,6 @@ const Attendance = new EntitySchema({
       type: "timestamp",
       nullable: true, // Permitir valores NULL temporalmente
     },
-    latitude: {
-      type: "double precision",
-      nullable: true, // Permitir valores NULL temporalmente
-    },
-    longitude: {
-      type: "double precision",
-      nullable: true, // Permitir valores NULL temporalmente
-    },
     userId: {
       type: "int",
       nullable: true, // Permitir valores NULL temporalmente

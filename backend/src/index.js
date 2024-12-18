@@ -14,7 +14,10 @@ import { passportJwtSetup } from "./auth/passport.auth.js";
 import indexRoutes from "./routes/index.routes.js"; // Rutas principales
 import workAreasRouter from "./routes/workAreas.js";
 import chartsRoutes from "./routes/charts.routes.js";
-import shiftRoutes from "./routes/shifts.routes.js"; // Nueva ruta para Turnos
+import shiftRoutes from "./routes/shifts.routes.js"; // Ruta para Turnos
+import attendanceRoutes from "./routes/attendance.routes.js"; // Ruta para Asistencia
+import areasRouter from "./routes/areas.routes.js";
+
 
 async function setupServer() {
   try {
@@ -27,7 +30,7 @@ async function setupServer() {
     app.use(
       cors({
         credentials: true,
-        origin: true, // Permitir todas las solicitudes por ahora (ajustar en producción)
+        origin: true, // Ajustar para producción con una lista de dominios permitidos
       })
     );
 
@@ -65,6 +68,8 @@ async function setupServer() {
     // Inicialización de Passport
     app.use(passport.initialize());
     app.use(passport.session());
+    app.use("/api/areas", areasRouter);
+
 
     // Configuración de estrategias de Passport
     passportJwtSetup();
@@ -73,7 +78,8 @@ async function setupServer() {
     app.use("/api", indexRoutes); // Ruta base del API
     app.use("/api/work_areas", workAreasRouter); // Ruta para Áreas de Trabajo
     app.use("/api/charts", chartsRoutes); // Ruta para gráficos
-    app.use("/api/shifts", shiftRoutes); // Nueva ruta para Turnos
+    app.use("/api/shifts", shiftRoutes); // Ruta para Turnos
+    app.use("/api/attendance", attendanceRoutes); // Ruta para Asistencia
 
     // Inicio del servidor
     app.listen(PORT, () => {
