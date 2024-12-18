@@ -101,7 +101,7 @@ export async function getHoursYearService(query){
 
         Data.forEach((date) => {
             const monthIndex = new Date(date.month).getUTCMonth();
-            hourData[monthIndex] = parseFloat(parseFloat(date.totalHours).toFixed(2));
+            hourData[monthIndex] = parseFloat(parseFloat(date.totalHours).toFixed(3));
         });
 
         const chartData = {
