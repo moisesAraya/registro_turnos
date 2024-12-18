@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '@components/Sidebar';
 import { AuthProvider } from '@context/AuthContext';
-import '@styles/Root.css';
+import '@styles/root.css';
 
 function Root() {
   return (
