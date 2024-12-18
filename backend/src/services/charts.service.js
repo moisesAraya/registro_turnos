@@ -101,7 +101,7 @@ export async function getHoursYearService(query){
 
         Data.forEach((date) => {
             const monthIndex = new Date(date.month).getUTCMonth();
-            hourData[monthIndex] = parseFloat(date.totalHours);
+            hourData[monthIndex] = parseFloat(parseFloat(date.totalHours).toFixed(2));
         });
 
         const chartData = {
@@ -272,7 +272,7 @@ export async function getHoursMonthService(query){
 
         Data.forEach((date) => {
             const dayIndex = parseInt(date.day, 10) - 1;
-            hourData[dayIndex] = parseFloat(date.totalHours);
+            hourData[dayIndex] = parseFloat(parseFloat(date.totalHours).toFixed(2));
         });
 
         const chartData = {
